@@ -1,2 +1,2 @@
 # Forage-Calculator-
-EUnetHorse  Digital tools - Forage calculator 
+Forage calculator - EUnetHorse - Digital tools 
