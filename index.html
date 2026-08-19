@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#006464">
-<title>Digital Tools by EUnetHorse</title>
+<title>Digital Tools by EUnetHorse - Fodder Balance</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#f4f6f0;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-input[type="number"],input[type="date"],select,textarea{font-size:16px!important;-webkit-appearance:none;border-radius:5px}
-button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:#f4f6f0;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+input[type=number],input[type=date]{font-size:16px!important;-webkit-appearance:none;border-radius:5px}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s}
+button:active{transform:scale(.97)}
 #root{max-width:940px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 30px rgba(0,0,0,.06)}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-</head>
-<body>
-<div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#006464;font-family:Arial"><div style="text-align:center"><div style="font-size:24px;font-weight:900">Digital Tools</div><div style="font-size:12px;opacity:.7;margin-top:4px">by EUnetHorse</div><div style="margin-top:16px;font-size:13px;color:#888">Loading...</div></div></div></div>
+</head><body>
+<div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#006464"><div style="text-align:center"><div style="font-size:26px;font-weight:900">Digital Tools</div><div style="font-size:13px;opacity:.7;margin-top:4px">by EUnetHorse</div><div style="margin-top:18px;font-size:13px;color:#888">Loading...</div></div></div></div>
 <script>
 const {
   useState,
@@ -38,7 +37,10 @@ const P = {
   ibg: "#FFFDE7",
   ibd: "#C8B900",
   red: "#C62828",
-  purple: "#7C4DFF"
+  purple: "#7C4DFF",
+  orange: "#E65100",
+  amber: "#FF8F00",
+  blue: "#0288D1"
 };
 const FL = {
   en: "\ud83c\uddec\ud83c\udde7",
@@ -49,800 +51,6 @@ const FL = {
   pl: "\ud83c\uddf5\ud83c\uddf1",
   ro: "\ud83c\uddf7\ud83c\uddf4",
   fi: "\ud83c\uddeb\ud83c\uddee"
-};
-const TR = {
-  en: {
-    app: "Fodder Balance Calculator",
-    tl: "Improving Resilience of Equine Farms",
-    t0: "Requirements",
-    t1: "Stock & Costs",
-    t2: "Balance",
-    tip: "Enter DM as decimal: 0.85 = 85%",
-    dmWarn: "You must enter DM values from your forage analysis to calculate requirements.",
-    rqT: "Animal Requirements",
-    rqD: "Calculate total forage needs for all your horses.",
-    hayDm: "Hay DM content",
-    hdm: "Haylage DM content",
-    dur: "Days",
-    cat: "Horse Category",
-    ft: "Forage",
-    gk: "Gross kg/day",
-    dk: "DM kg/day",
-    nh: "Horses",
-    tdm: "Total DM (t)",
-    hay: "Hay",
-    hyl: "Haylage",
-    c: ["Broodmares with foals", "Broodmares w/o foals", "Weaned foals (under 1yr)", "Foals 1-2 years", "Young horses 2-3 yrs", "Stallions", "Working adults", "Adults maintenance"],
-    tH: "Total Hay DM",
-    tY: "Total Haylage DM",
-    ton: "tonnes",
-    skT: "Stock & Cost Management",
-    skD: "Track forage lots with dates, quantities and costs.",
-    nb: "Bales",
-    bw: "Avg weight (kg)",
-    dc: "DM %",
-    sl: "Loss %",
-    ns: "Net (t DM)",
-    stip: "Add each purchase or production batch separately.",
-    dt: "Date",
-    pr: "Price/bale",
-    addL: "+ Add lot",
-    lot: "Lot",
-    totB: "Total bales",
-    totC: "Total cost",
-    avgP: "Avg price/bale",
-    avgCT: "Avg cost/t DM",
-    netS: "Net stock",
-    blT: "Forage Balance",
-    blD: "Compare needs with stock and expected harvest.",
-    need: "Requirements",
-    stk: "Net Stock",
-    harv: "Harvest / Production",
-    bal: "Balance",
-    saf: "Safety margin",
-    pur: "Purchases Needed",
-    sur: "Surplus - no purchase needed",
-    def: "Deficit - purchase needed",
-    iT: "How to Read",
-    iP: "POSITIVE: needs exceed stock + harvest. Purchase required.",
-    iN: "NEGATIVE: enough stock. Keep margin for drought, long winter, shortage.",
-    iS: "Margin 5-20% recommended. 10% is a good start.",
-    harvT: "Expected Harvest / Own Production",
-    harvD: "Enter expected production. Use bales (tonnes auto-calculated) or enter tonnes directly.",
-    harvBa: "Expected bales",
-    harvBW: "Avg bale wt (kg)",
-    harvDM: "DM %",
-    harvTo: "Calculated tonnes DM",
-    harvDi: "Or enter tonnes DM directly",
-    rc: ["Adult - Maintenance/Working", "Pregnant broodmare", "Lactating broodmare", "Stallion", "Foal 0-12 months", "Foal 12-24 months", "Young horse 2-3 years"],
-    sh: "Saddle 550kg",
-    po: "Pony 300kg",
-    dh: "Draft 700kg",
-    refT: "Feed Requirements (INRA 2011)",
-    refS: "Daily DM intake (kg DM/day)",
-    baleT: "Bale Weight References",
-    baleSrc: "Sources: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Round bales",
-    recB: "Rectangular bales",
-    dia: "Diameter",
-    dim: "Dimensions",
-    dwt: "DM wt (kg)",
-    gwt: "Gross wt (kg)",
-    str: "Straw",
-    rst: "Reset All",
-    ref: "Reference Tables",
-    cls: "Close",
-    ep: "Save PDF",
-    ex: "Save Excel",
-    exp: "Export",
-    del: "Delete",
-    costTi: "Cost Analysis",
-    estPC: "Est. purchase cost",
-    gen: "Generated",
-    aboutT: "About This Tool",
-    aboutP1: "This Fodder Balance Calculator helps equine farmers plan their forage needs for hay and haylage. It was developed as part of the EUnetHorse project (Horizon Europe, Grant Agreement No. 101086551), a thematic network dedicated to improving the resilience of equine farms across Europe.",
-    aboutP2: "The tool uses reference values from INRA (2011) for equine nutritional requirements and Idele/Herbvalo (2021) for bale weight references. It allows you to track multiple purchase and production lots with different dry matter content, storage losses, and costs.",
-    aboutP3: "For accurate results, we strongly recommend having your forage analysed by a certified laboratory. Forage analysis provides precise values for dry matter, energy content, protein, minerals, and fibre that vary significantly between batches, cuttings, and years. Using actual analysis values instead of estimates can make a substantial difference in your feeding plan.",
-    forageRec: "We strongly recommend performing a professional forage analysis on each batch of hay and haylage. Laboratory analysis provides accurate dry matter, energy, and nutrient values that are essential for precise feed planning. Contact your local agricultural advisory service or laboratory for testing.",
-    discT: "Disclaimer",
-    disc: "This tool is provided for informational and educational purposes only, as part of the EUnetHorse project funded by the European Union Horizon Europe programme (Grant Agreement No. 101086551). The calculations are based on general reference values and should not replace professional veterinary or nutritional advice. Every farm situation is unique - forage quality, horse condition, climate, and management practices all affect actual requirements. The developers accept no liability for decisions made based on the results of this calculator. Always consult a qualified equine nutritionist or veterinarian for specific feeding recommendations. Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Executive Agency (REA). Neither the European Union nor the granting authority can be held responsible for them.",
-    start: "Start Calculator",
-    learnMore: "Learn more at eunethorse.eu",
-    forageTip: "Forage Analysis Recommended"
-  },
-  fr: {
-    hayDm: "Teneur MS foin",
-    dmWarn: "Vous devez saisir les valeurs MS de votre analyse pour calculer les besoins.",
-    recB: "Balles rectangulaires",
-    dim: "Dimensions",
-    app: "Calculateur de Bilan Fourrager",
-    tl: "Ameliorer la resilience des elevages equins",
-    t0: "Besoins",
-    t1: "Stocks et Couts",
-    t2: "Bilan",
-    tip: "MS en decimal : 0,85 = 85%",
-    rqT: "Besoins des Animaux",
-    rqD: "Calculez les besoins totaux en fourrage.",
-    hdm: "Teneur MS enrubannage",
-    dur: "Jours",
-    cat: "Categorie",
-    ft: "Fourrage",
-    gk: "kg brut/jour",
-    dk: "kg MS/jour",
-    nh: "Effectif",
-    tdm: "Total MS (t)",
-    hay: "Foin",
-    hyl: "Enrubannage",
-    c: ["Poulinieres suitees", "Poulinieres non suitees", "Poulains sevres", "Poulains 1-2 ans", "Jeunes chevaux 2-3 ans", "Etalons", "Adultes au travail", "Adultes entretien"],
-    tH: "Total Foin MS",
-    tY: "Total Enrubannage MS",
-    ton: "tonnes",
-    skT: "Stocks et Couts",
-    skD: "Suivez vos lots avec dates, quantites et couts.",
-    nb: "Balles",
-    bw: "Poids moyen (kg)",
-    dc: "% MS",
-    sl: "Pertes %",
-    ns: "Net (t MS)",
-    stip: "Ajoutez chaque achat ou lot separement.",
-    dt: "Date",
-    pr: "Prix/balle",
-    addL: "+ Ajouter un lot",
-    lot: "Lot",
-    totB: "Total balles",
-    totC: "Cout total",
-    avgP: "Moy. prix/balle",
-    avgCT: "Moy. cout/t MS",
-    netS: "Stock net",
-    blT: "Bilan Fourrager",
-    blD: "Comparez besoins avec stock et recolte.",
-    need: "Besoins",
-    stk: "Stock net",
-    harv: "Recolte / Production",
-    bal: "Bilan",
-    saf: "Marge de securite",
-    pur: "Achats a prevoir",
-    sur: "Excedent",
-    def: "Deficit - achat necessaire",
-    iT: "Comment lire",
-    iP: "POSITIF : besoins depassent stock. Achat necessaire.",
-    iN: "NEGATIF : assez. Gardez marge (secheresse, hiver long, penurie).",
-    iS: "Marge 5-20% recommandee. 10% bon depart.",
-    harvT: "Recolte / Production propre",
-    harvD: "Saisissez votre production prevue. Balles (tonnes calculees) ou tonnes.",
-    harvBa: "Balles prevues",
-    harvBW: "Poids moyen (kg)",
-    harvDM: "% MS",
-    harvTo: "Tonnes MS calculees",
-    harvDi: "Ou saisir tonnes MS",
-    rc: ["Adulte - Entretien/Travail", "Pouliniere gestante", "Pouliniere allaitante", "Etalon", "Poulain 0-12 mois", "Poulain 12-24 mois", "Jeune cheval 2-3 ans"],
-    sh: "Selle 550kg",
-    po: "Poney 300kg",
-    dh: "Trait 700kg",
-    refT: "Besoins Alimentaires (INRA 2011)",
-    refS: "Ingestion journaliere (kg MS/jour)",
-    baleT: "Poids des Balles",
-    baleSrc: "Sources : Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Balles rondes",
-    dia: "Diametre",
-    dwt: "Poids MS (kg)",
-    gwt: "Poids brut (kg)",
-    str: "Paille",
-    rst: "Reinitialiser",
-    ref: "Tables reference",
-    cls: "Fermer",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Exporter",
-    del: "Suppr.",
-    costTi: "Analyse des couts",
-    estPC: "Cout estime achat",
-    gen: "Genere le",
-    aboutT: "A propos de cet outil",
-    aboutP1: "Ce calculateur de bilan fourrager aide les eleveurs equins a planifier leurs besoins en fourrage (foin et enrubannage). Il a ete developpe dans le cadre du projet EUnetHorse (Horizon Europe, convention de subvention n. 101086551), un reseau thematique dedie a l amelioration de la resilience des elevages equins en Europe.",
-    aboutP2: "L outil utilise les valeurs de reference INRA (2011) pour les besoins nutritionnels des equides et Idele/Herbvalo (2021) pour les references de poids des balles. Il permet de suivre plusieurs lots d achat et de production avec differentes teneurs en matiere seche, pertes de stockage et couts.",
-    aboutP3: "Pour des resultats precis, nous recommandons vivement de faire analyser votre fourrage par un laboratoire agree. L analyse fournit des valeurs precises de matiere seche, energie, proteines, mineraux et fibres qui varient considerablement entre les lots, les coupes et les annees.",
-    forageRec: "Nous recommandons vivement de realiser une analyse professionnelle de fourrage pour chaque lot de foin et d enrubannage. Contactez votre service de conseil agricole ou laboratoire local.",
-    discT: "Avis legal",
-    disc: "Cet outil est fourni a titre informatif et educatif uniquement, dans le cadre du projet EUnetHorse finance par le programme Horizon Europe de l Union europeenne (convention n. 101086551). Les calculs sont bases sur des valeurs de reference generales et ne doivent pas remplacer les conseils veterinaires ou nutritionnels professionnels. Chaque exploitation est unique. Les developpeurs declinent toute responsabilite pour les decisions prises sur la base des resultats de ce calculateur. Consultez toujours un nutritionniste equin ou un veterinaire qualifie. Finance par l Union europeenne. Les points de vue exprimes sont ceux des auteurs uniquement et ne refletent pas necessairement ceux de l Union europeenne ou de la REA.",
-    start: "Demarrer le calculateur",
-    learnMore: "En savoir plus sur eunethorse.eu",
-    forageTip: "Analyse de fourrage recommandee"
-  },
-  es: {
-    hayDm: "Contenido MS heno",
-    dmWarn: "Debe introducir los valores de MS de su analisis de forraje.",
-    recB: "Pacas rectangulares",
-    dim: "Dimensiones",
-    app: "Calculadora de Balance Forrajero",
-    tl: "Mejorando la resiliencia de las explotaciones equinas",
-    t0: "Necesidades",
-    t1: "Stocks y Costes",
-    t2: "Balance",
-    tip: "MS como decimal: 0,85 = 85%",
-    rqT: "Necesidades Animales",
-    rqD: "Calcule las necesidades totales de forraje.",
-    hdm: "Contenido MS henolaje",
-    dur: "Dias",
-    cat: "Categoria",
-    ft: "Forraje",
-    gk: "kg bruto/dia",
-    dk: "kg MS/dia",
-    nh: "Caballos",
-    tdm: "Total MS (t)",
-    hay: "Heno",
-    hyl: "Henolaje",
-    c: ["Yeguas con potro", "Yeguas sin potro", "Potros destetados", "Potros 1-2 anos", "Caballos jovenes 2-3a", "Sementales", "Adultos en trabajo", "Adultos mantenimiento"],
-    tH: "Total Heno MS",
-    tY: "Total Henolaje MS",
-    ton: "toneladas",
-    skT: "Stocks y Costes",
-    skD: "Registre lotes con fechas, cantidades y costes.",
-    nb: "Pacas",
-    bw: "Peso medio (kg)",
-    dc: "% MS",
-    sl: "Perdidas %",
-    ns: "Neto (t MS)",
-    stip: "Anada cada compra o lote por separado.",
-    dt: "Fecha",
-    pr: "Precio/paca",
-    addL: "+ Anadir lote",
-    lot: "Lote",
-    totB: "Total pacas",
-    totC: "Coste total",
-    avgP: "Media precio/paca",
-    avgCT: "Media coste/t MS",
-    netS: "Stock neto",
-    blT: "Balance Forrajero",
-    blD: "Compare necesidades con stock y cosecha.",
-    need: "Necesidades",
-    stk: "Stock neto",
-    harv: "Cosecha / Produccion",
-    bal: "Balance",
-    saf: "Margen seguridad",
-    pur: "Compras necesarias",
-    sur: "Excedente",
-    def: "Deficit - comprar",
-    iT: "Como leer",
-    iP: "POSITIVO: necesidades superan stock. Comprar.",
-    iN: "NEGATIVO: suficiente. Mantenga margen (sequia, invierno largo, escasez).",
-    iS: "Margen 5-20%. 10% buen inicio.",
-    harvT: "Cosecha / Produccion propia",
-    harvD: "Introduzca produccion prevista. Use pacas (toneladas se calculan) o toneladas.",
-    harvBa: "Pacas previstas",
-    harvBW: "Peso medio (kg)",
-    harvDM: "% MS",
-    harvTo: "Toneladas MS calculadas",
-    harvDi: "O introducir toneladas MS",
-    rc: ["Adulto - Mantenimiento/Trabajo", "Yegua gestante", "Yegua lactante", "Semental", "Potro 0-12 meses", "Potro 12-24 meses", "Caballo joven 2-3a"],
-    sh: "Silla 550kg",
-    po: "Poni 300kg",
-    dh: "Tiro 700kg",
-    refT: "Necesidades (INRA 2011)",
-    refS: "Ingesta diaria (kg MS/dia)",
-    baleT: "Peso de Pacas",
-    baleSrc: "Fuentes: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Pacas redondas",
-    dia: "Diametro",
-    dwt: "Peso MS (kg)",
-    gwt: "Peso bruto (kg)",
-    str: "Paja",
-    rst: "Reiniciar",
-    ref: "Tablas referencia",
-    cls: "Cerrar",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Exportar",
-    del: "Elim.",
-    costTi: "Analisis de costes",
-    estPC: "Coste estimado",
-    gen: "Generado",
-    aboutT: "Acerca de esta herramienta",
-    aboutP1: "Esta calculadora de balance forrajero ayuda a los ganaderos equinos a planificar sus necesidades de forraje (heno y henolaje). Ha sido desarrollada en el marco del proyecto EUnetHorse (Horizonte Europa, Acuerdo de Subvencion n. 101086551), una red tematica dedicada a mejorar la resiliencia de las explotaciones equinas en Europa.",
-    aboutP2: "La herramienta utiliza valores de referencia del INRA (2011) para las necesidades nutricionales de los equidos e Idele/Herbvalo (2021) para las referencias de peso de las pacas. Permite registrar multiples lotes de compra y produccion con diferente materia seca, perdidas de almacenamiento y costes.",
-    aboutP3: "Para resultados precisos, recomendamos encarecidamente analizar su forraje en un laboratorio acreditado. El analisis proporciona valores precisos de materia seca, energia, proteinas, minerales y fibra que varian significativamente entre lotes, cortes y anos. Usar valores reales en lugar de estimaciones puede marcar una diferencia sustancial en su plan de alimentacion.",
-    forageRec: "Recomendamos encarecidamente realizar un analisis profesional de forraje para cada lote de heno y henolaje. Contacte con su servicio de asesoramiento agricola o laboratorio local.",
-    discT: "Aviso legal",
-    disc: "Esta herramienta se proporciona unicamente con fines informativos y educativos, en el marco del proyecto EUnetHorse financiado por el programa Horizonte Europa de la Union Europea (Acuerdo n. 101086551). Los calculos se basan en valores de referencia generales y no deben sustituir el asesoramiento veterinario o nutricional profesional. Cada explotacion es unica. Los desarrolladores no aceptan responsabilidad por las decisiones tomadas en base a los resultados de esta calculadora. Consulte siempre a un nutricionista equino o veterinario cualificado. Financiado por la Union Europea. Las opiniones expresadas son unicamente las de los autores y no reflejan necesariamente las de la UE o la REA.",
-    start: "Iniciar calculadora",
-    learnMore: "Mas informacion en eunethorse.eu",
-    forageTip: "Analisis de forraje recomendado"
-  },
-  de: {
-    hayDm: "TS-Gehalt Heu",
-    dmWarn: "Geben Sie die TS-Werte Ihrer Futteranalyse ein.",
-    recB: "Rechteckballen",
-    dim: "Abmessungen",
-    app: "Futterbilanz-Rechner",
-    tl: "Resilienz von Pferdebetrieben verbessern",
-    t0: "Bedarf",
-    t1: "Bestand und Kosten",
-    t2: "Bilanz",
-    tip: "TS als Dezimal: 0,85 = 85%",
-    rqT: "Tierbedarf",
-    rqD: "Gesamtfutterbedarf berechnen.",
-    hdm: "TS-Gehalt Heulage",
-    dur: "Tage",
-    cat: "Kategorie",
-    ft: "Futter",
-    gk: "kg brutto/Tag",
-    dk: "kg TS/Tag",
-    nh: "Pferde",
-    tdm: "Ges.-TS (t)",
-    hay: "Heu",
-    hyl: "Heulage",
-    c: ["Stuten mit Fohlen", "Stuten ohne Fohlen", "Absetzfohlen", "Fohlen 1-2 Jahre", "Jungpferde 2-3 J.", "Hengste", "Arbeitspferde", "Erhaltung"],
-    tH: "Gesamt Heu TS",
-    tY: "Gesamt Heulage TS",
-    ton: "Tonnen",
-    skT: "Bestand und Kosten",
-    skD: "Futterposten mit Datum, Menge und Kosten verfolgen.",
-    nb: "Ballen",
-    bw: "Gewicht (kg)",
-    dc: "TS %",
-    sl: "Verlust %",
-    ns: "Netto (t TS)",
-    stip: "Jeden Einkauf separat eintragen.",
-    dt: "Datum",
-    pr: "Preis/Ballen",
-    addL: "+ Posten hinzufuegen",
-    lot: "Posten",
-    totB: "Ballen gesamt",
-    totC: "Gesamtkosten",
-    avgP: "Preis/Ballen",
-    avgCT: "Kosten/t TS",
-    netS: "Nettobestand",
-    blT: "Futterbilanz",
-    blD: "Bedarf mit Bestand und Ernte vergleichen.",
-    need: "Bedarf",
-    stk: "Nettobestand",
-    harv: "Ernte / Produktion",
-    bal: "Bilanz",
-    saf: "Sicherheitsmarge",
-    pur: "Zukaufbedarf",
-    sur: "Ueberschuss",
-    def: "Defizit - Zukauf noetig",
-    iT: "Bilanz interpretieren",
-    iP: "POSITIV: Bedarf uebersteigt Bestand. Zukauf erforderlich.",
-    iN: "NEGATIV: Genug. Marge fuer Trockenheit, langen Winter.",
-    iS: "Marge 5-20% empfohlen. 10% guter Start.",
-    harvT: "Geplante Ernte / Eigenproduktion",
-    harvD: "Erwartete Produktion eingeben. Ballen (Tonnen berechnet) oder Tonnen direkt.",
-    harvBa: "Erwartete Ballen",
-    harvBW: "Ballengewicht (kg)",
-    harvDM: "TS %",
-    harvTo: "Berechnete Tonnen TS",
-    harvDi: "Oder Tonnen TS direkt",
-    rc: ["Erwachsene - Erhaltung/Arbeit", "Tragende Stute", "Laktierende Stute", "Hengst", "Fohlen 0-12 Mon.", "Fohlen 12-24 Mon.", "Jungpferd 2-3 J."],
-    sh: "Reitpferd 550kg",
-    po: "Pony 300kg",
-    dh: "Kaltblut 700kg",
-    refT: "Futterbedarf (INRA 2011)",
-    refS: "TS-Aufnahme (kg TS/Tag)",
-    baleT: "Ballengewichte",
-    baleSrc: "Quellen: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Rundballen",
-    dia: "Durchmesser",
-    dwt: "TS-Gew. (kg)",
-    gwt: "Brutto (kg)",
-    str: "Stroh",
-    rst: "Zuruecksetzen",
-    ref: "Referenztabellen",
-    cls: "Schliessen",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Export",
-    del: "Entf.",
-    costTi: "Kostenanalyse",
-    estPC: "Geschaetzte Kosten",
-    gen: "Erstellt",
-    aboutT: "Ueber dieses Werkzeug",
-    aboutP1: "Dieser Futterbilanz-Rechner hilft Pferdebetrieben bei der Planung ihres Futterbedarfs. Er wurde im Rahmen des EUnetHorse-Projekts entwickelt (Horizon Europe, Foerdervereinbarung Nr. 101086551).",
-    aboutP2: "Das Werkzeug nutzt Referenzwerte des INRA (2011) und Idele/Herbvalo (2021). Es ermoeglicht die Verfolgung mehrerer Einkaufs- und Produktionsposten.",
-    aboutP3: "Fuer genaue Ergebnisse empfehlen wir dringend eine Futteranalyse durch ein akkreditiertes Labor. Die Analyse liefert praezise Werte, die zwischen Chargen und Jahren erheblich variieren.",
-    forageRec: "Wir empfehlen dringend eine professionelle Futteranalyse fuer jede Charge.",
-    discT: "Haftungsausschluss",
-    disc: "Dieses Werkzeug dient ausschliesslich Informations- und Bildungszwecken im Rahmen des EUnetHorse-Projekts (Horizon Europe, Nr. 101086551). Die Berechnungen basieren auf allgemeinen Referenzwerten und ersetzen keine professionelle Beratung. Jeder Betrieb ist einzigartig. Die Entwickler uebernehmen keine Haftung fuer Entscheidungen. Konsultieren Sie immer einen qualifizierten Ernaehrungsberater oder Tierarzt. Finanziert von der EU. Meinungen sind die der Autoren und spiegeln nicht die der EU oder REA wider.",
-    start: "Rechner starten",
-    learnMore: "Mehr auf eunethorse.eu",
-    forageTip: "Futteranalyse empfohlen"
-  },
-  pt: {
-    hayDm: "Teor MS feno",
-    dmWarn: "Introduza os valores MS da sua analise de forragem.",
-    recB: "Fardos rectangulares",
-    dim: "Dimensoes",
-    app: "Calculadora Balanco Forrageiro",
-    tl: "Melhorar a resiliencia das exploracoes equinas",
-    t0: "Necessidades",
-    t1: "Stocks e Custos",
-    t2: "Balanco",
-    tip: "MS como decimal: 0,85 = 85%",
-    rqT: "Necessidades Animais",
-    rqD: "Calcule as necessidades totais.",
-    hdm: "Teor MS feno-silagem",
-    dur: "Dias",
-    cat: "Categoria",
-    ft: "Forragem",
-    gk: "kg bruto/dia",
-    dk: "kg MS/dia",
-    nh: "Cavalos",
-    tdm: "Total MS (t)",
-    hay: "Feno",
-    hyl: "Feno-silagem",
-    c: ["Eguas com potro", "Eguas sem potro", "Potros desmamados", "Potros 1-2 anos", "Cavalos jovens 2-3a", "Garanhoes", "Adultos trabalho", "Adultos manutencao"],
-    tH: "Total Feno MS",
-    tY: "Total Feno-silag. MS",
-    ton: "toneladas",
-    skT: "Stocks e Custos",
-    skD: "Registe lotes com datas e custos.",
-    nb: "Fardos",
-    bw: "Peso medio (kg)",
-    dc: "% MS",
-    sl: "Perdas %",
-    ns: "Liquido (t MS)",
-    stip: "Adicione cada compra separadamente.",
-    dt: "Data",
-    pr: "Preco/fardo",
-    addL: "+ Adicionar lote",
-    lot: "Lote",
-    totB: "Total fardos",
-    totC: "Custo total",
-    avgP: "Media preco/fardo",
-    avgCT: "Media custo/t MS",
-    netS: "Stock liquido",
-    blT: "Balanco Forrageiro",
-    blD: "Compare necessidades com stock e colheita.",
-    need: "Necessidades",
-    stk: "Stock liquido",
-    harv: "Colheita / Producao",
-    bal: "Balanco",
-    saf: "Margem seguranca",
-    pur: "Compras necessarias",
-    sur: "Excedente",
-    def: "Defice - comprar",
-    iT: "Como ler",
-    iP: "POSITIVO: necessidades excedem stock. Comprar.",
-    iN: "NEGATIVO: suficiente. Manter margem.",
-    iS: "Margem 5-20%. 10% bom inicio.",
-    harvT: "Colheita / Producao propria",
-    harvD: "Introduza producao prevista. Fardos (toneladas calculadas) ou toneladas.",
-    harvBa: "Fardos previstos",
-    harvBW: "Peso medio (kg)",
-    harvDM: "% MS",
-    harvTo: "Toneladas MS calculadas",
-    harvDi: "Ou introduzir toneladas MS",
-    rc: ["Adulto - Manut./Trabalho", "Egua gestante", "Egua lactante", "Garanhao", "Potro 0-12m", "Potro 12-24m", "Cavalo jovem 2-3a"],
-    sh: "Sela 550kg",
-    po: "Ponei 300kg",
-    dh: "Tiro 700kg",
-    refT: "Necessidades (INRA 2011)",
-    refS: "Ingestao diaria (kg MS/dia)",
-    baleT: "Peso Fardos",
-    baleSrc: "Fontes: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Fardos redondos",
-    dia: "Diametro",
-    dwt: "Peso MS (kg)",
-    gwt: "Peso bruto (kg)",
-    str: "Palha",
-    rst: "Reiniciar",
-    ref: "Tabelas ref.",
-    cls: "Fechar",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Exportar",
-    del: "Elim.",
-    costTi: "Analise custos",
-    estPC: "Custo estimado",
-    gen: "Gerado",
-    aboutT: "Sobre esta ferramenta",
-    aboutP1: "Esta calculadora ajuda os criadores equinos a planear as necessidades de forragem. Foi desenvolvida no ambito do projeto EUnetHorse (Horizonte Europa, n. 101086551).",
-    aboutP2: "Utiliza valores de referencia INRA (2011) e Idele/Herbvalo (2021). Permite acompanhar multiplos lotes de compra e producao.",
-    aboutP3: "Para resultados precisos, recomendamos a analise laboratorial do seu forragem.",
-    forageRec: "Recomendamos uma analise profissional para cada lote de feno e feno-silagem.",
-    discT: "Aviso legal",
-    disc: "Esta ferramenta e fornecida apenas para fins informativos e educativos no ambito do projeto EUnetHorse (Horizonte Europa, n. 101086551). Os calculos baseiam-se em valores de referencia gerais. Consulte sempre um nutricionista equino ou veterinario. Financiado pela UE. As opinioes sao dos autores e nao refletem as da UE ou REA.",
-    start: "Iniciar calculadora",
-    learnMore: "Mais em eunethorse.eu",
-    forageTip: "Analise de forragem recomendada"
-  },
-  pl: {
-    hayDm: "Zawartosc SM siana",
-    dmWarn: "Musisz wpisac wartosci SM z analizy paszy.",
-    recB: "Bele prostokatne",
-    dim: "Wymiary",
-    app: "Kalkulator Bilansu Paszowego",
-    tl: "Poprawa odpornosci gospodarstw koniowatych",
-    t0: "Potrzeby",
-    t1: "Zapasy i Koszty",
-    t2: "Bilans",
-    tip: "SM jako ulamek: 0,85 = 85%",
-    rqT: "Potrzeby Zwierzat",
-    rqD: "Oblicz zapotrzebowanie na pasze.",
-    hdm: "SM sianokiszonki",
-    dur: "Dni",
-    cat: "Kategoria",
-    ft: "Pasza",
-    gk: "kg brutto/dz.",
-    dk: "kg SM/dz.",
-    nh: "Konie",
-    tdm: "SM (t)",
-    hay: "Siano",
-    hyl: "Sianokiszonka",
-    c: ["Klacze ze zrebieta", "Klacze bez zrebiat", "Odsadzone zrebieta", "Zrebieta 1-2 lata", "Mlode konie 2-3 lata", "Ogiery", "Dorosle w pracy", "Dorosle utrzymanie"],
-    tH: "Lacznie Siano SM",
-    tY: "Lacznie Sianokisz. SM",
-    ton: "tony",
-    skT: "Zapasy i Koszty",
-    skD: "Sledz partie z datami i kosztami.",
-    nb: "Bele",
-    bw: "Waga (kg)",
-    dc: "% SM",
-    sl: "Straty %",
-    ns: "Netto (t SM)",
-    stip: "Dodaj kazdy zakup osobno.",
-    dt: "Data",
-    pr: "Cena/bela",
-    addL: "+ Dodaj partie",
-    lot: "Partia",
-    totB: "Lacznie bel",
-    totC: "Koszt laczny",
-    avgP: "Cena/bela",
-    avgCT: "Koszt/t SM",
-    netS: "Zapas netto",
-    blT: "Bilans Paszowy",
-    blD: "Porownaj potrzeby z zapasami.",
-    need: "Potrzeby",
-    stk: "Zapas netto",
-    harv: "Zbiory / Produkcja",
-    bal: "Bilans",
-    saf: "Margines bezp.",
-    pur: "Zakupy",
-    sur: "Nadwyzka",
-    def: "Deficyt - kup",
-    iT: "Jak czytac",
-    iP: "DODATNI: potrzeby przekraczaja zapasy. Kup.",
-    iN: "UJEMNY: wystarczy. Zachowaj margines.",
-    iS: "Margines 5-20%. 10% dobry start.",
-    harvT: "Planowane zbiory / Produkcja",
-    harvD: "Wpisz produkcje. Bele (tony obliczane) lub tony.",
-    harvBa: "Planowane bele",
-    harvBW: "Waga beli (kg)",
-    harvDM: "% SM",
-    harvTo: "Obliczone tony SM",
-    harvDi: "Lub wpisz tony SM",
-    rc: ["Dorosly - Utrzym./Praca", "Klacz zrebna", "Klacz karmiaca", "Ogier", "Zrebie 0-12 m.", "Zrebie 12-24 m.", "Mlody kon 2-3 l."],
-    sh: "Wierzch. 550kg",
-    po: "Kuc 300kg",
-    dh: "Zimnokrw. 700kg",
-    refT: "Potrzeby (INRA 2011)",
-    refS: "Dzienne SM (kg SM/dzien)",
-    baleT: "Wagi Bel",
-    baleSrc: "Zrodla: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Bele okragle",
-    dia: "Srednica",
-    dwt: "Waga SM (kg)",
-    gwt: "Waga brutto (kg)",
-    str: "Sloma",
-    rst: "Resetuj",
-    ref: "Tabele ref.",
-    cls: "Zamknij",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Eksport",
-    del: "Usun",
-    costTi: "Analiza kosztow",
-    estPC: "Szac. koszt",
-    gen: "Wygenerowano",
-    aboutT: "O narzedziu",
-    aboutP1: "Ten kalkulator pomaga hodowcom koni planowac zapotrzebowanie na pasze. Zostal opracowany w ramach projektu EUnetHorse (Horizon Europe, nr 101086551).",
-    aboutP2: "Narzedzie wykorzystuje wartosci referencyjne INRA (2011) i Idele/Herbvalo (2021).",
-    aboutP3: "Dla dokladnych wynikow zalecamy analize paszy w akredytowanym laboratorium.",
-    forageRec: "Zalecamy profesjonalna analize paszy dla kazdej partii.",
-    discT: "Zastrzezenie prawne",
-    disc: "To narzedzie sluzy wylacznie celom informacyjnym i edukacyjnym w ramach projektu EUnetHorse (Horizon Europe, nr 101086551). Obliczenia opieraja sie na ogolnych wartosciach referencyjnych. Skonsultuj sie z nutriologiem lub weterynarzem. Finansowane przez UE. Opinie sa opiniami autorow.",
-    start: "Uruchom kalkulator",
-    learnMore: "Wiecej na eunethorse.eu",
-    forageTip: "Zalecana analiza paszy"
-  },
-  ro: {
-    hayDm: "Continut SU fan",
-    dmWarn: "Trebuie sa introduceti valorile SU din analiza furajului.",
-    recB: "Baloturi dreptunghiulare",
-    dim: "Dimensiuni",
-    app: "Calculator Bilant Furajer",
-    tl: "Imbunatatirea rezilientei fermelor ecvine",
-    t0: "Necesar",
-    t1: "Stocuri si Costuri",
-    t2: "Bilant",
-    tip: "SU ca zecimala: 0,85 = 85%",
-    rqT: "Necesarul Animalelor",
-    rqD: "Calculati necesarul total.",
-    hdm: "SU fan infasurat",
-    dur: "Zile",
-    cat: "Categorie",
-    ft: "Furaj",
-    gk: "kg brut/zi",
-    dk: "kg SU/zi",
-    nh: "Cai",
-    tdm: "Total SU (t)",
-    hay: "Fan",
-    hyl: "Fan infasurat",
-    c: ["Iepe cu manji", "Iepe fara manji", "Manji intarcati", "Manji 1-2 ani", "Cai tineri 2-3 ani", "Armasari", "Adulti munca", "Adulti intretinere"],
-    tH: "Total Fan SU",
-    tY: "Total Fan inf. SU",
-    ton: "tone",
-    skT: "Stocuri si Costuri",
-    skD: "Urmariti loturile cu date si costuri.",
-    nb: "Baloturi",
-    bw: "Greutate (kg)",
-    dc: "% SU",
-    sl: "Pierderi %",
-    ns: "Net (t SU)",
-    stip: "Adaugati fiecare achizitie separat.",
-    dt: "Data",
-    pr: "Pret/balot",
-    addL: "+ Adauga lot",
-    lot: "Lot",
-    totB: "Total baloturi",
-    totC: "Cost total",
-    avgP: "Pret/balot",
-    avgCT: "Cost/t SU",
-    netS: "Stoc net",
-    blT: "Bilant Furajer",
-    blD: "Comparati nevoile cu stocul.",
-    need: "Necesar",
-    stk: "Stoc net",
-    harv: "Recolta / Productie",
-    bal: "Bilant",
-    saf: "Marja siguranta",
-    pur: "Achizitii",
-    sur: "Excedent",
-    def: "Deficit - cumparati",
-    iT: "Cum se citeste",
-    iP: "POZITIV: nevoile depasesc stocul. Cumparati.",
-    iN: "NEGATIV: suficient. Pastrati marja.",
-    iS: "Marja 5-20%. 10% e bun.",
-    harvT: "Recolta / Productie proprie",
-    harvD: "Introduceti productia. Baloturi (tone calculate) sau tone.",
-    harvBa: "Baloturi prevazute",
-    harvBW: "Greutate (kg)",
-    harvDM: "% SU",
-    harvTo: "Tone SU calculate",
-    harvDi: "Sau introduceti tone SU",
-    rc: ["Adult - Intretinere/Munca", "Iapa gestanta", "Iapa lactatie", "Armasar", "Manz 0-12 luni", "Manz 12-24 luni", "Cal tanar 2-3 ani"],
-    sh: "Calarie 550kg",
-    po: "Ponei 300kg",
-    dh: "Tractiune 700kg",
-    refT: "Nevoi (INRA 2011)",
-    refS: "Ingestie zilnica (kg SU/zi)",
-    baleT: "Referinte Baloturi",
-    baleSrc: "Surse: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Baloturi rotunde",
-    dia: "Diametru",
-    dwt: "Greutate SU (kg)",
-    gwt: "Greutate bruta (kg)",
-    str: "Paie",
-    rst: "Resetare",
-    ref: "Tabele ref.",
-    cls: "Inchide",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Export",
-    del: "Sterge",
-    costTi: "Analiza costurilor",
-    estPC: "Cost estimat",
-    gen: "Generat",
-    aboutT: "Despre acest instrument",
-    aboutP1: "Acest calculator ajuta fermierii de cai sa planifice nevoile de furaje. A fost dezvoltat in cadrul proiectului EUnetHorse (Horizon Europe, nr. 101086551).",
-    aboutP2: "Utilizeaza valori de referinta INRA (2011) si Idele/Herbvalo (2021).",
-    aboutP3: "Pentru rezultate precise, recomandam analiza furajului intr-un laborator acreditat.",
-    forageRec: "Recomandam analiza profesionala pentru fiecare lot de furaje.",
-    discT: "Clauza de exonerare",
-    disc: "Acest instrument este oferit exclusiv in scop informativ si educational in cadrul proiectului EUnetHorse (Horizon Europe, nr. 101086551). Calculele se bazeaza pe valori de referinta generale. Consultati intotdeauna un nutritionist sau veterinar calificat. Finantat de UE. Opiniile sunt ale autorilor.",
-    start: "Porniti calculatorul",
-    learnMore: "Mai multe pe eunethorse.eu",
-    forageTip: "Analiza furajului recomandata"
-  },
-  fi: {
-    hayDm: "Heinan KA",
-    dmWarn: "Syota KA-arvot rehuanalyysista.",
-    recB: "Suorakaidepaalit",
-    dim: "Mitat",
-    app: "Rehutaselaskuri",
-    tl: "Hevostilojen kestavyyden parantaminen",
-    t0: "Tarve",
-    t1: "Varasto ja Kulut",
-    t2: "Tase",
-    tip: "KA desimaalina: 0,85 = 85%",
-    rqT: "Elainten Tarve",
-    rqD: "Laske kokonaisrehuntarve.",
-    hdm: "Sailoheinan KA",
-    dur: "Paivat",
-    cat: "Kategoria",
-    ft: "Rehu",
-    gk: "kg brutto/pv",
-    dk: "kg KA/pv",
-    nh: "Hevoset",
-    tdm: "Yht. KA (t)",
-    hay: "Heina",
-    hyl: "Sailoheina",
-    c: ["Tammat varsoineen", "Tammat ilman varsaa", "Vieroitetut varsat", "Varsat 1-2 v", "Nuoret hevoset 2-3 v", "Oriit", "Tyossa olevat", "Yllapidossa olevat"],
-    tH: "Yht. Heina KA",
-    tY: "Yht. Sailoheina KA",
-    ton: "tonnia",
-    skT: "Varasto ja Kulut",
-    skD: "Seuraa rehueria kustannuksilla.",
-    nb: "Paalit",
-    bw: "Keskipaino (kg)",
-    dc: "KA %",
-    sl: "Tappio %",
-    ns: "Netto (t KA)",
-    stip: "Lisaa jokainen osto erikseen.",
-    dt: "Pvm",
-    pr: "Hinta/paali",
-    addL: "+ Lisaa era",
-    lot: "Era",
-    totB: "Paalit yht.",
-    totC: "Kust. yht.",
-    avgP: "Hinta/paali",
-    avgCT: "Kust./t KA",
-    netS: "Nettovarasto",
-    blT: "Rehutase",
-    blD: "Vertaa tarpeita varastoon.",
-    need: "Tarpeet",
-    stk: "Nettovarasto",
-    harv: "Sato / Tuotanto",
-    bal: "Tase",
-    saf: "Varmuusmarg.",
-    pur: "Ostotarve",
-    sur: "Ylijaama",
-    def: "Vaje - osta",
-    iT: "Tulkinta",
-    iP: "POSITIIVINEN: tarve ylittaa varaston. Osta.",
-    iN: "NEGATIIVINEN: tarpeeksi. Pida marginaali.",
-    iS: "Marginaali 5-20%. 10% hyva alku.",
-    harvT: "Odotettu sato / Oma tuotanto",
-    harvD: "Syota tuotanto. Paalit (tonnit lasketaan) tai tonnit.",
-    harvBa: "Odotetut paalit",
-    harvBW: "Keskipaino (kg)",
-    harvDM: "KA %",
-    harvTo: "Lasketut tonnit KA",
-    harvDi: "Tai syota tonnia KA",
-    rc: ["Aikuinen - Yllapito/Tyo", "Tiine tamma", "Imettava tamma", "Ori", "Varsa 0-12 kk", "Varsa 12-24 kk", "Nuori hevonen 2-3 v"],
-    sh: "Ratsu 550kg",
-    po: "Poni 300kg",
-    dh: "Tyohevonen 700kg",
-    refT: "Rehuntarve (INRA 2011)",
-    refS: "KA-saanti (kg KA/pv)",
-    baleT: "Paalien Painot",
-    baleSrc: "Lahteet: Idele/Herbvalo 2021, FarmKeep 2025",
-    rB: "Pyoropaalit",
-    dia: "Halkaisija",
-    dwt: "KA-paino (kg)",
-    gwt: "Bruttopaino (kg)",
-    str: "Olki",
-    rst: "Nollaa",
-    ref: "Viitetaulukot",
-    cls: "Sulje",
-    ep: "PDF",
-    ex: "Excel",
-    exp: "Vie",
-    del: "Poista",
-    costTi: "Kustannukset",
-    estPC: "Arvioitu kust.",
-    gen: "Luotu",
-    aboutT: "Tietoa tyokalusta",
-    aboutP1: "Tama rehutaselaskuri auttaa hevostilallisia suunnittelemaan rehuntarpeensa. Se on kehitetty EUnetHorse-hankkeessa (Horizon Europe, nr 101086551).",
-    aboutP2: "Tyokalu kayttaa INRA (2011) ja Idele/Herbvalo (2021) viitearvoja.",
-    aboutP3: "Tarkoille tuloksille suosittelemme rehuanalyysia akkreditoidussa laboratoriossa.",
-    forageRec: "Suosittelemme ammattimaista rehuanalyysia jokaiselle eralle.",
-    discT: "Vastuuvapauslauseke",
-    disc: "Tama tyokalu on tarkoitettu vain tiedotus- ja koulutustarkoituksiin EUnetHorse-hankkeen puitteissa (Horizon Europe, nr 101086551). Laskelmat perustuvat yleisiin viitearvoihin. Konsultoi aina ravitsemusasiantuntijaa tai elainlaakaria. EU rahoittama. Mielipiteet ovat kirjoittajien.",
-    start: "Kaynnista laskuri",
-    learnMore: "Lisatietoa eunethorse.eu",
-    forageTip: "Rehuanalyysi suositeltava"
-  }
 };
 const INRA = [["8-13", "5-8", "10-17"], ["8-12", "5-8", "9-14"], ["13-18", "7-10", "12-22"], ["11-15", "6-8", "12-16"], ["5-9", "4-5", "7-9"], ["8-11", "5-6", "10-12"], ["11-13", "6-7", "11-13"]];
 const BLD = {
@@ -886,32 +94,1075 @@ const BLD = {
     g: "285-365"
   }]
 };
-const BRECT = {
-  hay: [{
-    d: "36x46x90 cm",
-    g: "18-34"
-  }, {
-    d: "80x90x240 cm",
-    g: "360-680"
-  }],
-  haylage: [{
-    d: "36x46x90 cm",
-    g: "25-45"
-  }, {
-    d: "80x90x240 cm",
-    g: "500-900"
-  }],
-  straw: [{
-    d: "36x46x90 cm",
-    g: "15-25"
-  }, {
-    d: "80x90x240 cm",
-    g: "300-550"
-  }]
+const NUTR = [{
+  p: "Crude Protein",
+  h: "8-14%",
+  y: "12-20%",
+  w: "Higher in haylage (leaves preserved better)"
+}, {
+  p: "Fibre (NDF)",
+  h: "55-68%",
+  y: "45-55%",
+  w: "Lower in haylage (early cut, more digestible)"
+}, {
+  p: "Digestibility",
+  h: "50-58%",
+  y: "60-68%",
+  w: "Haylage more digestible"
+}, {
+  p: "Metabolisable Energy",
+  h: "1.8-2.0 Mcal/kg",
+  y: "2.1-2.4 Mcal/kg",
+  w: "Higher energy in haylage"
+}, {
+  p: "Palatability",
+  h: "Good",
+  y: "Excellent",
+  w: "Haylage is juicier and more aromatic"
+}, {
+  p: "Dust and spores",
+  h: "Variable",
+  y: "Almost none",
+  w: "Haylage best for respiratory health"
+}];
+const TR_EN = {
+  app: "Fodder Balance Calculator",
+  tl: "Improving Resilience of Equine Farms",
+  t0: "1. Feed needs",
+  t1: "2. Your stock",
+  t2: "3. Your result",
+  whyT: "Why plan your forage?",
+  whyP1: "Running out of hay mid-winter is stressful, expensive, and bad for your horses. Prices spike during shortages.",
+  whyP2: "This tool answers one question: do I have enough forage until the next harvest?",
+  whyP3: "10 minutes now could save you thousands later.",
+  aboutT: "About this tool",
+  aboutP1: "Developed by EUnetHorse (EU Horizon Europe, Grant No. 101086551) - 15 partners, 9 countries.",
+  aboutP2: "Uses INRA (2011) reference values and Idele/Herbvalo (2021) bale weights.",
+  aboutP3: "For best results, get a professional forage analysis from your local lab.",
+  start: "Start planning",
+  learnMore: "eunethorse.eu",
+  forageTip: "Get a forage analysis",
+  discT: "Legal notice",
+  bwT: "Basic feeding guideline",
+  bwP: "Horses should receive at least 1.5-2% of their body weight (BW) in forage per day on a DM basis. This can include pasture, legumes, or preserved forages such as hay, haylage, forage substitutes (hay cubes, hay-based pellets, beet pulp) or other high-fiber sources. The average maximum daily DM intake is usually 2-2.5% of body weight.",
+  refsT: "Scientific references",
+  disc1: "This tool is provided for educational and informational purposes only and does not constitute veterinary or nutritional advice. It should not replace a professional examination. Always consult qualified specialists (veterinarian, equine nutritionist, or agricultural engineer) for decisions regarding the health, feeding and welfare of your horse and the quality/quantity of forage to provide. The authors and the EUnetHorse project accept no liability for actions taken based on the results of this tool.",
+  disc2: "This application does not collect, store or transmit any personal data or images. All information entered remains exclusively on your device.",
+  disc3: "Free Digital tool developed within the EUnetHorse project (Horizon Europe #101086551). Reproduction permitted with attribution.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "How much forage do your horses need?",
+  rqD: "For each category, tell us: how many days you need to feed them, how many kg each horse eats per day, and how many horses you have in that group.",
+  hay: "Hay",
+  hyl: "Haylage",
+  dmT: "Dry Matter (DM)",
+  dmWhat: "What is Dry Matter?",
+  dmExplain1: "All forage contains water. Dry Matter is the actual nutrition - everything except the water.",
+  dmExplain2: "Think of squeezing a sponge: the water comes out, what remains is the dry matter. Hay is quite dry, haylage is wetter.",
+  dmExplain3: "Why does this matter? Your horses need NUTRITION, not water. If haylage is 60% DM, your horse needs to eat more kg of it than hay at 85% DM.",
+  dmHow: "How to know your DM? Ask your forage supplier, or send a sample to an agricultural laboratory. A lab analysis costs very little.",
+  dmFormat: "Enter DM as a decimal: 0.85 means 85%.",
+  dmTypHay: "Typical Hay DM: 0.70 - 0.85 (70-85%)",
+  dmTypHyl: "Typical Haylage DM: 0.55 - 0.75 (55-75%)",
+  dmHayLabel: "Hay DM",
+  dmHylLabel: "Haylage DM",
+  dmMissing: "Please enter your DM values above. Without them, the calculator cannot work.",
+  nutrT: "Hay vs Haylage - Nutritional Comparison",
+  nutrD: "This calculator uses Dry Matter, but there are other important nutritional differences:",
+  nutrParam: "Nutrient",
+  nutrHay: "Hay",
+  nutrHyl: "Haylage",
+  nutrWhy: "Notes",
+  nutrExtra1: "Haylage is baled with moisture, so nutrient-rich leaves are preserved (they fall off during field drying of hay).",
+  nutrExtra2: "Haylage can be cut earlier (pre-flowering), when the forage is more digestible.",
+  nutrExtra3: "Haylage retains internal moisture, eliminating dust - ideal for horses with respiratory issues.",
+  cat: "Horse category",
+  dur: "How many days?",
+  gk: "kg per day (as fed)",
+  dk: "DM per day",
+  nh: "How many horses?",
+  tdm: "Total needed",
+  c: ["Broodmares with foals", "Broodmares without foals", "Weaned foals (under 1 year)", "Foals 1 to 2 years", "Young horses 2 to 3 years", "Stallions", "Working adults", "Adults at maintenance"],
+  tH: "Total Hay needed",
+  tY: "Total Haylage needed",
+  ton: "tonnes DM",
+  skT: "What forage do you have in stock?",
+  skD: "Enter each batch. Different batches may have different weight, DM and price - add them separately for accuracy.",
+  nb: "How many bales?",
+  bw: "Weight per bale (kg)",
+  dc: "DM",
+  sl: "Storage loss",
+  slHelp: "About storage losses",
+  slExplain: "Some forage is lost during storage due to mould or spoilage. Typical losses:",
+  slHayGood: "Hay, well stored indoors: 2-5%",
+  slHayBad: "Hay, outdoors/poor conditions: 10-20%",
+  slHylGood: "Haylage, well wrapped: 5-10%",
+  slHylBad: "Haylage, damaged wrap: 15-30%",
+  dt: "Date",
+  pr: "Price/bale",
+  addL: "+ Add batch",
+  lot: "Batch",
+  del: "Remove",
+  totB: "Total bales",
+  totC: "Total spent",
+  avgP: "Avg price/bale",
+  avgCT: "Avg cost/t DM",
+  netS: "Net stock",
+  blT: "Your Forage Balance",
+  blD: "Based on what your horses need and what you have in stock.",
+  youNeed: "Your horses need",
+  youHave: "You have in stock",
+  enough: "You have enough",
+  shortage: "You are short",
+  enoughMsg: "You have extra: {x} tonnes DM.",
+  shortMsg: "You are short by {x} tonnes DM.",
+  withSafety: "With {p}% safety margin, you should get:",
+  saf: "Safety margin",
+  safExplain: "A buffer for unexpected events: longer winter, dry summer, new horse. 10% is a good starting point.",
+  planT: "Plan production and/or purchases",
+  planD: "If you will produce your own forage or plan to buy more, enter it here.",
+  harvBa: "How many bales?",
+  harvBW: "Bale weight (kg)",
+  harvDM: "DM (e.g. 0.85)",
+  harvTo: "= Tonnes DM",
+  harvDi: "Or enter tonnes DM",
+  planBalePrice: "Price/bale",
+  planTonnePrice: "Price/tonne",
+  planCost: "Estimated cost",
+  iT: "Understanding the result",
+  iP: "If you are SHORT, the number shows how much more forage you need - through production or purchase.",
+  iN: "If you have ENOUGH, keep a safety margin for unexpected situations.",
+  refT: "Reference: Daily intake (INRA 2011)",
+  refS: "Daily DM intake per horse (kg DM/day)",
+  rc: ["Adult - Maintenance/Work", "Pregnant broodmare", "Lactating broodmare", "Stallion", "Foal 0-12 months", "Foal 12-24 months", "Young horse 2-3 years"],
+  sh: "Saddle 550kg",
+  po: "Pony 300kg",
+  dh: "Draft 700kg",
+  baleT: "Reference: Bale weights",
+  baleSrc: "Sources: Idele/Herbvalo 2021",
+  rB: "Round bales",
+  dia: "Diameter",
+  dwt: "DM wt (kg)",
+  gwt: "Gross wt (kg)",
+  str: "Straw",
+  rst: "Start over",
+  ref: "Reference data",
+  cls: "Close",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Export",
+  gen: "Generated",
+  costTi: "Cost summary"
+};
+const TR_FR = {
+  app: "Calculateur de Bilan Fourrager",
+  tl: "Ameliorer la resilience des elevages equins",
+  t0: "1. Besoins",
+  t1: "2. Votre stock",
+  t2: "3. Resultat",
+  whyT: "Pourquoi planifier ?",
+  whyP1: "Manquer de foin en hiver est stressant, couteux et mauvais pour vos chevaux.",
+  whyP2: "Cet outil repond : ai-je assez de fourrage jusqu a la prochaine recolte ?",
+  whyP3: "10 minutes maintenant, des milliers d euros d economie plus tard.",
+  aboutT: "A propos",
+  aboutP1: "EUnetHorse (Horizon Europe, n. 101086551) - 15 partenaires, 9 pays.",
+  aboutP2: "References INRA (2011) et Idele/Herbvalo (2021).",
+  aboutP3: "Pour de meilleurs resultats, faites analyser votre fourrage.",
+  start: "Commencer",
+  learnMore: "eunethorse.eu",
+  forageTip: "Analyse de fourrage",
+  discT: "Avis legal",
+  bwT: "Regle de base alimentation",
+  bwP: "Les chevaux doivent recevoir au moins 1,5-2% de leur poids corporel (PC) en fourrage par jour sur base MS. Cela peut inclure paturage, legumineuses ou fourrages conserves (foin, enrubannage, substituts comme cubes de foin, granules a base de foin, pulpe de betterave). L ingestion maximale journaliere en MS est generalement de 2-2,5% du poids corporel.",
+  refsT: "References scientifiques",
+  disc1: "Cet outil est fourni a des fins educatives et informatives uniquement et ne constitue pas un avis veterinaire ou nutritionnel. Il ne remplace pas un examen professionnel. Consultez toujours des specialistes qualifies (veterinaire, nutritionniste equin ou ingenieur agricole) pour les decisions sur la sante, l alimentation et le bien-etre de votre cheval et sur la qualite/quantite de fourrage. Les auteurs et le projet EUnetHorse declinent toute responsabilite.",
+  disc2: "Cette application ne collecte, ne stocke ni ne transmet aucune donnee personnelle. Toutes les informations restent exclusivement sur votre appareil.",
+  disc3: "Outil numerique gratuit developpe dans le projet EUnetHorse (Horizon Europe #101086551). Reproduction autorisee avec mention.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "De combien de fourrage vos chevaux ont-ils besoin ?",
+  rqD: "Pour chaque categorie : jours, kg par jour et nombre de chevaux.",
+  hay: "Foin",
+  hyl: "Enrubannage",
+  dmT: "Matiere Seche (MS)",
+  dmWhat: "Qu est-ce que la MS ?",
+  dmExplain1: "Tout fourrage contient de l eau. La MS est la partie nutritive - tout sauf l eau.",
+  dmExplain2: "Imaginez une eponge : si vous la pressez, l eau sort. Ce qui reste est la MS.",
+  dmExplain3: "Pourquoi c est important ? Vos chevaux ont besoin de NUTRITION, pas d eau. Si l enrubannage est a 60% de MS, le cheval doit en manger plus qu avec du foin a 85%.",
+  dmHow: "Comment connaitre votre MS ? Demandez au fournisseur ou envoyez un echantillon en laboratoire.",
+  dmFormat: "Entrez la MS en decimal : 0,85 signifie 85%.",
+  dmTypHay: "MS typique Foin : 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "MS typique Enrubannage : 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "MS Foin",
+  dmHylLabel: "MS Enrubannage",
+  dmMissing: "Veuillez entrer les valeurs de MS ci-dessus.",
+  nutrT: "Foin vs Enrubannage - Comparaison",
+  nutrD: "Ce calculateur utilise la MS, mais d autres differences nutritionnelles existent :",
+  nutrParam: "Nutriment",
+  nutrHay: "Foin",
+  nutrHyl: "Enrubannage",
+  nutrWhy: "Notes",
+  nutrExtra1: "L enrubannage est ensile humide, les feuilles riches en nutriments sont preservees.",
+  nutrExtra2: "L enrubannage peut etre coupe plus tot (pre-floraison), quand le fourrage est plus digestible.",
+  nutrExtra3: "L enrubannage retient l humidite interne, eliminant la poussiere - ideal pour chevaux respiratoires.",
+  cat: "Categorie",
+  dur: "Combien de jours ?",
+  gk: "kg/jour (brut)",
+  dk: "MS/jour",
+  nh: "Combien ?",
+  tdm: "Total",
+  c: ["Poulinieres suitees", "Poulinieres non suitees", "Poulains sevres", "Poulains 1-2 ans", "Jeunes chevaux 2-3 ans", "Etalons", "Adultes au travail", "Adultes entretien"],
+  tH: "Total Foin",
+  tY: "Total Enrubannage",
+  ton: "tonnes MS",
+  skT: "Quel fourrage avez-vous en stock ?",
+  skD: "Ajoutez chaque lot separement.",
+  nb: "Combien de balles ?",
+  bw: "Poids/balle (kg)",
+  dc: "MS",
+  sl: "Pertes stockage",
+  slHelp: "Pertes de stockage",
+  slExplain: "Pertes typiques :",
+  slHayGood: "Foin, bien stocke : 2-5%",
+  slHayBad: "Foin, mal stocke : 10-20%",
+  slHylGood: "Enrubannage, bien emballe : 5-10%",
+  slHylBad: "Enrubannage, film abime : 15-30%",
+  dt: "Date",
+  pr: "Prix/balle",
+  addL: "+ Ajouter lot",
+  lot: "Lot",
+  del: "Retirer",
+  totB: "Total balles",
+  totC: "Total depense",
+  avgP: "Prix moy.",
+  avgCT: "Cout/t MS",
+  netS: "Stock net",
+  blT: "Votre Bilan Fourrager",
+  blD: "Base sur les besoins et le stock.",
+  youNeed: "Vos chevaux ont besoin de",
+  youHave: "Vous avez en stock",
+  enough: "Vous en avez assez",
+  shortage: "Il vous manque",
+  enoughMsg: "Vous avez en surplus : {x} tonnes MS.",
+  shortMsg: "Il vous manque {x} tonnes MS.",
+  withSafety: "Avec {p}% de marge, vous devriez prevoir :",
+  saf: "Marge",
+  safExplain: "Marge pour les imprevus. 10% est un bon depart.",
+  planT: "Planifier production et/ou achats",
+  planD: "Si vous produisez ou prevoyez d acheter, entrez-le ici.",
+  harvBa: "Combien de balles ?",
+  harvBW: "Poids balle (kg)",
+  harvDM: "MS (ex: 0,85)",
+  harvTo: "= Tonnes MS",
+  harvDi: "Ou tonnes MS",
+  planBalePrice: "Prix/balle",
+  planTonnePrice: "Prix/tonne",
+  planCost: "Cout estime",
+  iT: "Comprendre le resultat",
+  iP: "S il vous MANQUE du fourrage, le chiffre indique combien vous devez trouver.",
+  iN: "Si vous en avez ASSEZ, gardez une marge de securite.",
+  refT: "Reference : Besoins (INRA 2011)",
+  refS: "Ingestion journaliere (kg MS/jour)",
+  rc: ["Adulte - Entretien/Travail", "Pouliniere gestante", "Pouliniere allaitante", "Etalon", "Poulain 0-12 mois", "Poulain 12-24 mois", "Jeune cheval 2-3 ans"],
+  sh: "Selle 550kg",
+  po: "Poney 300kg",
+  dh: "Trait 700kg",
+  baleT: "Reference : Poids balles",
+  baleSrc: "Sources : Idele/Herbvalo 2021",
+  rB: "Balles rondes",
+  dia: "Diametre",
+  dwt: "Poids MS (kg)",
+  gwt: "Poids brut (kg)",
+  str: "Paille",
+  rst: "Recommencer",
+  ref: "Donnees ref.",
+  cls: "Fermer",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Exporter",
+  gen: "Genere le",
+  costTi: "Resume couts"
+};
+const TR_ES = {
+  app: "Calculadora de Balance Forrajero",
+  tl: "Mejorando la resiliencia de las explotaciones equinas",
+  t0: "1. Necesidades",
+  t1: "2. Tu stock",
+  t2: "3. Resultado",
+  whyT: "Por que planificar?",
+  whyP1: "Quedarte sin heno en invierno es estresante, caro y malo para tus caballos.",
+  whyP2: "Esta herramienta responde: tengo suficiente forraje hasta la proxima cosecha?",
+  whyP3: "10 minutos ahora pueden ahorrarte miles de euros.",
+  aboutT: "Sobre la herramienta",
+  aboutP1: "Proyecto EUnetHorse (Horizonte Europa, n. 101086551) - 15 socios, 9 paises.",
+  aboutP2: "Valores INRA (2011) e Idele/Herbvalo (2021).",
+  aboutP3: "Para mejores resultados, haz analizar tu forraje en un laboratorio.",
+  start: "Empezar",
+  learnMore: "eunethorse.eu",
+  forageTip: "Analisis de forraje",
+  discT: "Aviso legal",
+  bwT: "Regla basica de alimentacion",
+  bwP: "Los caballos deben recibir al menos 1,5-2% de su peso corporal (PC) en forraje al dia en base MS. Puede incluir pasto, leguminosas o forrajes conservados (heno, henolaje, sustitutos como cubos de heno, pellets de heno, pulpa de remolacha). La ingestion maxima diaria de MS suele ser 2-2,5% del peso corporal.",
+  refsT: "Referencias cientificas",
+  disc1: "Esta herramienta se proporciona con fines educativos e informativos unicamente y no constituye asesoramiento veterinario o nutricional. No debe sustituir un examen profesional. Consulte siempre a especialistas cualificados (veterinario, nutricionista equino o ingeniero agricola) para decisiones sobre la salud, alimentacion y bienestar de su caballo y sobre la calidad/cantidad de forraje a proporcionar. Los autores y el proyecto EUnetHorse no aceptan responsabilidad.",
+  disc2: "Esta aplicacion no recopila, almacena ni transmite datos personales o imagenes. Toda la informacion introducida permanece exclusivamente en su dispositivo.",
+  disc3: "Herramienta digital gratuita desarrollada en el proyecto EUnetHorse (Horizonte Europa #101086551). Reproduccion permitida con atribucion.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Cuanto forraje necesitan tus caballos?",
+  rqD: "Para cada categoria: cuantos dias, cuantos kg come cada caballo al dia, y cuantos caballos tienes.",
+  hay: "Heno",
+  hyl: "Henolaje",
+  dmT: "Materia Seca (MS)",
+  dmWhat: "Que es la Materia Seca?",
+  dmExplain1: "Todo el forraje contiene agua. La materia seca es la parte que realmente alimenta: todo menos el agua.",
+  dmExplain2: "Piensa en una esponja: si la exprimes, sale el agua. Lo que queda es la materia seca. El heno es bastante seco, el henolaje es mas humedo.",
+  dmExplain3: "Por que importa? Tus caballos necesitan NUTRICION, no agua. Si tu henolaje tiene 60% de MS, el caballo necesita comer mas kg para obtener la misma nutricion que con heno al 85%.",
+  dmHow: "Como saber tu MS? Pregunta a tu proveedor de forraje, o envia una muestra a un laboratorio agricola. Un analisis cuesta poco.",
+  dmFormat: "Introduce la MS como decimal: 0,85 significa 85%.",
+  dmTypHay: "MS tipica Heno: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "MS tipica Henolaje: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "MS Heno",
+  dmHylLabel: "MS Henolaje",
+  dmMissing: "Introduce los valores de MS arriba. Sin ellos, la calculadora no puede funcionar.",
+  nutrT: "Heno vs Henolaje - Comparacion Nutricional",
+  nutrD: "Esta calculadora usa Materia Seca, pero hay otras diferencias nutricionales importantes:",
+  nutrParam: "Nutriente",
+  nutrHay: "Heno",
+  nutrHyl: "Henolaje",
+  nutrWhy: "Notas",
+  nutrExtra1: "El henolaje se empaca con humedad, por lo que las hojas ricas en nutrientes se conservan (en el heno se caen al secarse en el campo).",
+  nutrExtra2: "El henolaje se puede cortar antes (prefloracion), cuando el forraje es mas digestible.",
+  nutrExtra3: "El henolaje retiene la humedad interna, eliminando el polvo - ideal para caballos con problemas respiratorios.",
+  cat: "Categoria de caballo",
+  dur: "Cuantos dias?",
+  gk: "kg/dia (tal cual)",
+  dk: "MS/dia",
+  nh: "Cuantos caballos?",
+  tdm: "Total necesario",
+  c: ["Yeguas con potro", "Yeguas sin potro", "Potros destetados (menos de 1 ano)", "Potros de 1 a 2 anos", "Caballos jovenes 2 a 3 anos", "Sementales", "Adultos en trabajo", "Adultos en mantenimiento"],
+  tH: "Total Heno",
+  tY: "Total Henolaje",
+  ton: "toneladas MS",
+  skT: "Que forraje tienes en stock?",
+  skD: "Introduce cada lote de heno o henolaje. Diferentes lotes pueden tener diferente peso, MS y precio.",
+  nb: "Cuantas pacas?",
+  bw: "Peso/paca (kg)",
+  dc: "MS",
+  sl: "Perdidas almacen",
+  slHelp: "Sobre perdidas de almacen",
+  slExplain: "Parte del forraje se pierde por moho o deterioro. Perdidas tipicas:",
+  slHayGood: "Heno bien almacenado (interior): 2-5%",
+  slHayBad: "Heno mal almacenado (exterior): 10-20%",
+  slHylGood: "Henolaje bien envuelto: 5-10%",
+  slHylBad: "Henolaje con plastico danado: 15-30%",
+  dt: "Fecha",
+  pr: "Precio/paca",
+  addL: "+ Anadir lote",
+  lot: "Lote",
+  del: "Quitar",
+  totB: "Total pacas",
+  totC: "Total gastado",
+  avgP: "Precio medio",
+  avgCT: "Coste/t MS",
+  netS: "Stock neto",
+  blT: "Tu Balance Forrajero",
+  blD: "Basado en lo que necesitan tus caballos y lo que tienes en stock.",
+  youNeed: "Tus caballos necesitan",
+  youHave: "Tienes en stock",
+  enough: "Tienes suficiente",
+  shortage: "Te falta",
+  enoughMsg: "Tienes extra: {x} toneladas MS.",
+  shortMsg: "Te faltan {x} toneladas MS.",
+  withSafety: "Con {p}% de margen, deberias conseguir:",
+  saf: "Margen",
+  safExplain: "Un colchon para imprevistos: invierno mas largo, verano seco, nuevo caballo. 10% es un buen punto de partida.",
+  planT: "Planificar produccion y/o compras",
+  planD: "Si vas a producir tu propio forraje o planeas comprar mas, introducelo aqui.",
+  harvBa: "Cuantas pacas?",
+  harvBW: "Peso paca (kg)",
+  harvDM: "MS (ej: 0,85)",
+  harvTo: "= Toneladas MS",
+  harvDi: "O introduce toneladas MS",
+  planBalePrice: "Precio/paca",
+  planTonnePrice: "Precio/tonelada",
+  planCost: "Coste estimado",
+  iT: "Entendiendo el resultado",
+  iP: "Si te FALTA forraje, el numero indica cuanto necesitas conseguir.",
+  iN: "Si tienes SUFICIENTE, manten un margen de seguridad para imprevistos.",
+  refT: "Referencia: Necesidades (INRA 2011)",
+  refS: "Ingestion diaria (kg MS/dia)",
+  rc: ["Adulto - Mantenimiento/Trabajo", "Yegua gestante", "Yegua lactante", "Semental", "Potro 0-12 meses", "Potro 12-24 meses", "Caballo joven 2-3a"],
+  sh: "Silla 550kg",
+  po: "Poni 300kg",
+  dh: "Tiro 700kg",
+  baleT: "Referencia: Peso de pacas",
+  baleSrc: "Fuentes: Idele/Herbvalo 2021",
+  rB: "Pacas redondas",
+  dia: "Diametro",
+  dwt: "Peso MS (kg)",
+  gwt: "Peso bruto (kg)",
+  str: "Paja",
+  rst: "Empezar de nuevo",
+  ref: "Datos ref.",
+  cls: "Cerrar",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Exportar",
+  gen: "Generado",
+  costTi: "Resumen costes"
+};
+const TR_DE = {
+  app: "Futterbilanz-Rechner",
+  tl: "Resilienz von Pferdebetrieben",
+  t0: "1. Bedarf",
+  t1: "2. Bestand",
+  t2: "3. Ergebnis",
+  whyT: "Warum planen?",
+  whyP1: "Ohne Heu im Winter: stressig, teuer, schlecht fuer die Pferde.",
+  whyP2: "Dieses Werkzeug beantwortet: Reicht mein Futter bis zur naechsten Ernte?",
+  whyP3: "10 Minuten jetzt, tausende Euro spaeter gespart.",
+  aboutT: "Ueber",
+  aboutP1: "EUnetHorse (Horizon Europe, Nr. 101086551).",
+  aboutP2: "INRA (2011) und Idele/Herbvalo (2021).",
+  aboutP3: "Fuer beste Ergebnisse: Futteranalyse im Labor.",
+  start: "Starten",
+  learnMore: "eunethorse.eu",
+  forageTip: "Futteranalyse",
+  discT: "Haftungshinweis",
+  bwT: "Grundregel Fuetterung",
+  bwP: "Pferde sollten mindestens 1,5-2% ihres Koerpergewichts (KG) an Raufutter pro Tag auf TS-Basis erhalten. Dies kann Weide, Leguminosen oder konserviertes Futter (Heu, Heulage, Ersatzfutter wie Heuwuerfel, Heupellets, Ruebenschnitzel) umfassen. Die maximale taegliche TS-Aufnahme betraegt in der Regel 2-2,5% des Koerpergewichts.",
+  refsT: "Wissenschaftliche Referenzen",
+  disc1: "Dieses Werkzeug wird ausschliesslich zu Bildungs- und Informationszwecken bereitgestellt und stellt keine tieraerztliche oder ernaehrungswissenschaftliche Beratung dar. Es ersetzt keine professionelle Untersuchung. Konsultieren Sie immer qualifizierte Fachleute (Tierarzt, Pferdenutritionist oder Agrarwissenschaftler) fuer Entscheidungen zur Gesundheit, Fuetterung und Wohlfahrt Ihres Pferdes und zur Qualitaet/Menge des Futters. Die Autoren und das EUnetHorse-Projekt uebernehmen keine Haftung.",
+  disc2: "Diese Anwendung sammelt, speichert oder uebertraegt keine persoenlichen Daten. Alle Informationen bleiben auf Ihrem Geraet.",
+  disc3: "Kostenloses digitales Werkzeug im EUnetHorse-Projekt (Horizon Europe #101086551). Vervielfaeltigung mit Quellenangabe erlaubt.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Wie viel Futter brauchen Ihre Pferde?",
+  rqD: "Fuer jede Kategorie: Tage, kg pro Tag, Anzahl Pferde.",
+  hay: "Heu",
+  hyl: "Heulage",
+  dmT: "Trockensubstanz (TS)",
+  dmWhat: "Was ist Trockensubstanz?",
+  dmExplain1: "Alles Futter enthaelt Wasser. TS ist der nahrhafte Teil - alles ausser Wasser.",
+  dmExplain2: "Wie ein Schwamm: drueckt man ihn aus, fliesst Wasser ab. Was bleibt, ist die TS.",
+  dmExplain3: "Warum wichtig? Pferde brauchen NAEHRSTOFFE, nicht Wasser. Bei 60% TS muss das Pferd mehr kg fressen.",
+  dmHow: "TS-Wert erfahren: Fragen Sie den Lieferanten oder senden Sie eine Probe ans Labor.",
+  dmFormat: "TS als Dezimalzahl: 0,85 bedeutet 85%.",
+  dmTypHay: "Typische Heu-TS: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "Typische Heulage-TS: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "TS Heu",
+  dmHylLabel: "TS Heulage",
+  dmMissing: "Bitte TS-Werte oben eingeben.",
+  nutrT: "Heu vs Heulage - Naehrstoffvergleich",
+  nutrD: "Dieser Rechner nutzt TS, aber es gibt weitere Naehrstoffunterschiede:",
+  nutrParam: "Naehrstoff",
+  nutrHay: "Heu",
+  nutrHyl: "Heulage",
+  nutrWhy: "Anmerkungen",
+  nutrExtra1: "Heulage wird feucht gepresst, naehrstoffreiche Blaetter bleiben erhalten.",
+  nutrExtra2: "Heulage kann frueher geschnitten werden (Vorbluete), wenn das Futter verdaulicher ist.",
+  nutrExtra3: "Heulage behaelt die Feuchtigkeit und ist staubfrei - ideal fuer Pferde mit Atemwegsproblemen.",
+  cat: "Kategorie",
+  dur: "Wie viele Tage?",
+  gk: "kg/Tag (Frischmasse)",
+  dk: "TS/Tag",
+  nh: "Wie viele?",
+  tdm: "Gesamt",
+  c: ["Stuten mit Fohlen", "Stuten ohne Fohlen", "Absetzfohlen", "Fohlen 1-2 J.", "Jungpferde 2-3 J.", "Hengste", "Arbeitspferde", "Erhaltung"],
+  tH: "Gesamt Heu",
+  tY: "Gesamt Heulage",
+  ton: "Tonnen TS",
+  skT: "Welches Futter haben Sie auf Lager?",
+  skD: "Jede Charge einzeln eingeben.",
+  nb: "Wie viele Ballen?",
+  bw: "Gewicht/Ballen (kg)",
+  dc: "TS",
+  sl: "Lagerverlust",
+  slHelp: "Ueber Lagerverluste",
+  slExplain: "Typische Verluste:",
+  slHayGood: "Heu, gut gelagert: 2-5%",
+  slHayBad: "Heu, schlecht gelagert: 10-20%",
+  slHylGood: "Heulage, gut verpackt: 5-10%",
+  slHylBad: "Heulage, beschaedigt: 15-30%",
+  dt: "Datum",
+  pr: "Preis/Ballen",
+  addL: "+ Charge",
+  lot: "Charge",
+  del: "Entf.",
+  totB: "Ballen ges.",
+  totC: "Gesamtausg.",
+  avgP: "Durchschn. Preis",
+  avgCT: "Kosten/t TS",
+  netS: "Nettobestand",
+  blT: "Ihre Futterbilanz",
+  blD: "Basierend auf Bedarf und Bestand.",
+  youNeed: "Ihre Pferde brauchen",
+  youHave: "Sie haben auf Lager",
+  enough: "Sie haben genug",
+  shortage: "Es fehlt Ihnen",
+  enoughMsg: "Ueberschuss: {x} Tonnen TS.",
+  shortMsg: "Es fehlen {x} Tonnen TS.",
+  withSafety: "Mit {p}% Marge sollten Sie beschaffen:",
+  saf: "Marge",
+  safExplain: "Puffer fuer Unvorhergesehenes. 10% ist ein guter Anfang.",
+  planT: "Produktion und/oder Einkauf planen",
+  planD: "Eigene Produktion oder geplante Einkaeufe.",
+  harvBa: "Wie viele Ballen?",
+  harvBW: "Ballengewicht (kg)",
+  harvDM: "TS (z.B. 0,85)",
+  harvTo: "= Tonnen TS",
+  harvDi: "Oder Tonnen TS",
+  planBalePrice: "Preis/Ballen",
+  planTonnePrice: "Preis/Tonne",
+  planCost: "Geschaetzte Kosten",
+  iT: "Ergebnis verstehen",
+  iP: "Wenn Futter FEHLT, zeigt die Zahl, wie viel Sie beschaffen muessen.",
+  iN: "Wenn Sie GENUG haben, halten Sie eine Marge.",
+  refT: "Referenz: Bedarf (INRA 2011)",
+  refS: "Taegliche TS-Aufnahme",
+  rc: ["Erwachsene", "Tragende Stute", "Laktierende Stute", "Hengst", "Fohlen 0-12 Mon.", "Fohlen 12-24 Mon.", "Jungpferd"],
+  sh: "Reitpferd 550kg",
+  po: "Pony 300kg",
+  dh: "Kaltblut 700kg",
+  baleT: "Referenz: Ballengewichte",
+  baleSrc: "Quellen: Idele/Herbvalo 2021",
+  rB: "Rundballen",
+  dia: "Durchmesser",
+  dwt: "TS-Gew. (kg)",
+  gwt: "Brutto (kg)",
+  str: "Stroh",
+  rst: "Neu starten",
+  ref: "Referenzdaten",
+  cls: "Schliessen",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Export",
+  gen: "Erstellt",
+  costTi: "Kostenuebersicht"
+};
+const TR_PT = {
+  app: "Calculadora de Balanco Forrageiro",
+  tl: "Melhorar a resiliencia das exploracoes equinas",
+  t0: "1. Necessidades",
+  t1: "2. Stock",
+  t2: "3. Resultado",
+  whyT: "Porque planear?",
+  whyP1: "Ficar sem feno no inverno e caro e mau para os cavalos.",
+  whyP2: "Tenho forragem suficiente ate a proxima colheita?",
+  whyP3: "10 minutos podem poupar milhares.",
+  aboutT: "Sobre",
+  aboutP1: "EUnetHorse (Horizonte Europa, n. 101086551).",
+  aboutP2: "INRA (2011) e Idele/Herbvalo (2021).",
+  aboutP3: "Faca analise laboratorial para melhores resultados.",
+  start: "Comecar",
+  learnMore: "eunethorse.eu",
+  forageTip: "Analise de forragem",
+  discT: "Aviso legal",
+  bwT: "Regra basica de alimentacao",
+  bwP: "Os cavalos devem receber pelo menos 1,5-2% do seu peso corporal (PC) em forragem por dia em base MS. Pode incluir pastagem, leguminosas ou forragens conservadas (feno, feno-silagem, substitutos como cubos de feno, pellets, polpa de beterraba). A ingestao maxima diaria de MS e geralmente 2-2,5% do peso corporal.",
+  refsT: "Referencias cientificas",
+  disc1: "Esta ferramenta e fornecida apenas para fins educativos e informativos e nao constitui aconselhamento veterinario ou nutricional. Nao substitui um exame profissional. Consulte sempre especialistas qualificados (veterinario, nutricionista equino ou engenheiro agricola) para decisoes sobre a saude, alimentacao e bem-estar do seu cavalo e sobre a qualidade/quantidade de forragem. Os autores e o projeto EUnetHorse nao aceitam responsabilidade.",
+  disc2: "Esta aplicacao nao recolhe, armazena ou transmite dados pessoais. Toda a informacao permanece no seu dispositivo.",
+  disc3: "Ferramenta digital gratuita desenvolvida no projeto EUnetHorse (Horizonte Europa #101086551). Reproducao permitida com atribuicao.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Quanta forragem precisam os seus cavalos?",
+  rqD: "Para cada categoria: dias, kg/dia e numero de cavalos.",
+  hay: "Feno",
+  hyl: "Feno-silagem",
+  dmT: "Materia Seca (MS)",
+  dmWhat: "O que e a MS?",
+  dmExplain1: "Toda a forragem contem agua. A MS e a parte nutritiva.",
+  dmExplain2: "Como uma esponja: a agua sai, o que fica e a MS.",
+  dmExplain3: "Porque importa? Os cavalos precisam de NUTRICAO, nao agua. A 60% MS o cavalo tem de comer mais kg.",
+  dmHow: "Pergunte ao fornecedor ou envie amostra ao laboratorio.",
+  dmFormat: "MS como decimal: 0,85 significa 85%.",
+  dmTypHay: "MS tipica Feno: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "MS tipica Feno-silagem: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "MS Feno",
+  dmHylLabel: "MS Feno-silag.",
+  dmMissing: "Introduza os valores MS acima.",
+  nutrT: "Feno vs Feno-silagem - Comparacao",
+  nutrD: "Este calculador usa MS, mas ha outras diferencas nutricionais:",
+  nutrParam: "Nutriente",
+  nutrHay: "Feno",
+  nutrHyl: "Feno-silagem",
+  nutrWhy: "Notas",
+  nutrExtra1: "O feno-silagem preserva melhor as folhas ricas em nutrientes.",
+  nutrExtra2: "O feno-silagem pode ser cortado mais cedo, quando e mais digestivel.",
+  nutrExtra3: "O feno-silagem nao tem po - ideal para cavalos respiratorios.",
+  cat: "Categoria",
+  dur: "Quantos dias?",
+  gk: "kg/dia (bruto)",
+  dk: "MS/dia",
+  nh: "Quantos?",
+  tdm: "Total",
+  c: ["Eguas com potro", "Eguas sem potro", "Potros desmamados", "Potros 1-2 anos", "Cavalos jovens 2-3a", "Garanhoes", "Adultos trabalho", "Adultos manutencao"],
+  tH: "Total Feno",
+  tY: "Total Feno-silag.",
+  ton: "toneladas MS",
+  skT: "Que forragem tem em stock?",
+  skD: "Adicione cada lote separadamente.",
+  nb: "Quantos fardos?",
+  bw: "Peso/fardo (kg)",
+  dc: "MS",
+  sl: "Perdas armazem",
+  slHelp: "Sobre perdas de armazenamento",
+  slExplain: "Perdas tipicas:",
+  slHayGood: "Feno bem armazenado: 2-5%",
+  slHayBad: "Feno mal armazenado: 10-20%",
+  slHylGood: "Feno-silagem bem embalado: 5-10%",
+  slHylBad: "Feno-silagem danificado: 15-30%",
+  dt: "Data",
+  pr: "Preco/fardo",
+  addL: "+ Adicionar lote",
+  lot: "Lote",
+  del: "Remover",
+  totB: "Total fardos",
+  totC: "Total gasto",
+  avgP: "Preco medio",
+  avgCT: "Custo/t MS",
+  netS: "Stock liquido",
+  blT: "O Seu Balanco",
+  blD: "Baseado nas necessidades e no stock.",
+  youNeed: "Os seus cavalos precisam",
+  youHave: "Tem em stock",
+  enough: "Tem o suficiente",
+  shortage: "Falta-lhe",
+  enoughMsg: "Excedente: {x} toneladas MS.",
+  shortMsg: "Faltam {x} toneladas MS.",
+  withSafety: "Com {p}% de margem, deve adquirir:",
+  saf: "Margem",
+  safExplain: "Margem para imprevistos. 10% e bom.",
+  planT: "Planear producao e/ou compras",
+  planD: "Producao propria ou compras futuras.",
+  harvBa: "Quantos fardos?",
+  harvBW: "Peso fardo (kg)",
+  harvDM: "MS (ex: 0,85)",
+  harvTo: "= Toneladas MS",
+  harvDi: "Ou toneladas MS",
+  planBalePrice: "Preco/fardo",
+  planTonnePrice: "Preco/tonelada",
+  planCost: "Custo estimado",
+  iT: "Entender o resultado",
+  iP: "Se FALTA, o numero mostra quanto precisa adquirir.",
+  iN: "Se tem SUFICIENTE, mantenha margem.",
+  refT: "Referencia: Necessidades (INRA 2011)",
+  refS: "Ingestao diaria (kg MS/dia)",
+  rc: ["Adulto", "Egua gestante", "Egua lactante", "Garanhao", "Potro 0-12m", "Potro 12-24m", "Cavalo jovem"],
+  sh: "Sela 550kg",
+  po: "Ponei 300kg",
+  dh: "Tiro 700kg",
+  baleT: "Referencia: Peso fardos",
+  baleSrc: "Fontes: Idele/Herbvalo 2021",
+  rB: "Fardos redondos",
+  dia: "Diametro",
+  dwt: "Peso MS (kg)",
+  gwt: "Peso bruto (kg)",
+  str: "Palha",
+  rst: "Reiniciar",
+  ref: "Dados ref.",
+  cls: "Fechar",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Exportar",
+  gen: "Gerado",
+  costTi: "Resumo custos"
+};
+const TR_PL = {
+  app: "Kalkulator Bilansu Paszowego",
+  tl: "Poprawa odpornosci gospodarstw",
+  t0: "1. Potrzeby",
+  t1: "2. Zapas",
+  t2: "3. Wynik",
+  whyT: "Dlaczego planowac?",
+  whyP1: "Brak siana zima to stres, koszty i szkoda dla koni.",
+  whyP2: "Czy mam wystarczajaco paszy?",
+  whyP3: "10 minut moze zaoszczedzic tysiace.",
+  aboutT: "O narzedziu",
+  aboutP1: "EUnetHorse (Horizon Europe, nr 101086551).",
+  aboutP2: "INRA (2011) i Idele/Herbvalo (2021).",
+  aboutP3: "Analiza laboratoryjna dla najlepszych wynikow.",
+  start: "Zacznij",
+  learnMore: "eunethorse.eu",
+  forageTip: "Analiza paszy",
+  discT: "Zastrzezenie prawne",
+  bwT: "Podstawowa zasada zywienia",
+  bwP: "Konie powinny otrzymywac co najmniej 1,5-2% swojej masy ciala (MC) w paszy dziennie w oparciu o SM. Moze to obejmowac pastwisko, roslin straczkowych lub pasze zakonserwowane (siano, sianokiszonka, substytuty jak kostki siana, granulki, wyslodki buraczane). Maksymalne dzienne pobranie SM to zwykle 2-2,5% masy ciala.",
+  refsT: "Referencje naukowe",
+  disc1: "To narzedzie sluzy wylacznie celom edukacyjnym i informacyjnym i nie stanowi porady weterynaryjnej ani zywieniowej. Nie zastepuje badania profesjonalnego. Zawsze konsultuj sie z wykwalifikowanymi specjalistami (weterynarz, zywieniowiec koni lub inzynier rolnictwa) w sprawie zdrowia, zywienia i dobrostanu konia oraz jakosci/ilosci paszy. Autorzy i projekt EUnetHorse nie ponosza odpowiedzialnosci.",
+  disc2: "Ta aplikacja nie zbiera, nie przechowuje ani nie przekazuje danych osobowych. Wszystkie informacje pozostaja na Twoim urzadzeniu.",
+  disc3: "Bezplatne cyfrowe narzedzie w projekcie EUnetHorse (Horizon Europe #101086551). Reprodukcja dozwolona z atrybucja.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Ile paszy potrzebuja twoje konie?",
+  rqD: "Dla kazdej kategorii: dni, kg/dzien, liczba koni.",
+  hay: "Siano",
+  hyl: "Sianokiszonka",
+  dmT: "Sucha Masa (SM)",
+  dmWhat: "Czym jest Sucha Masa?",
+  dmExplain1: "Kazda pasza zawiera wode. SM to czesc odzywcza.",
+  dmExplain2: "Jak gabka: wycisnij wode, zostaje SM.",
+  dmExplain3: "Konie potrzebuja ODZYWEK, nie wody. Przy 60% SM kon musi jesc wiecej kg.",
+  dmHow: "Zapytaj dostawce lub wyslij probe do laboratorium.",
+  dmFormat: "SM jako dziesietna: 0,85 oznacza 85%.",
+  dmTypHay: "Typowa SM Siano: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "Typowa SM Sianokiszonka: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "SM Siano",
+  dmHylLabel: "SM Sianokisz.",
+  dmMissing: "Wpisz wartosci SM powyzej.",
+  nutrT: "Siano vs Sianokiszonka - Porownanie",
+  nutrD: "Kalkulator uzywa SM, ale sa inne roznice odzywcze:",
+  nutrParam: "Skladnik",
+  nutrHay: "Siano",
+  nutrHyl: "Sianokiszonka",
+  nutrWhy: "Uwagi",
+  nutrExtra1: "Sianokiszonka zachowuje bogate w skladniki liscie.",
+  nutrExtra2: "Sianokiszonke mozna kosic wczesniej, gdy jest bardziej strawna.",
+  nutrExtra3: "Sianokiszonka nie ma pylu - idealna dla koni z problemami oddechowymi.",
+  cat: "Kategoria",
+  dur: "Ile dni?",
+  gk: "kg/dzien (brutto)",
+  dk: "SM/dzien",
+  nh: "Ile?",
+  tdm: "Lacznie",
+  c: ["Klacze ze zrebieta", "Klacze bez zrebiat", "Odsadzone zrebieta", "Zrebieta 1-2 lata", "Mlode konie 2-3 lata", "Ogiery", "Dorosle w pracy", "Dorosle utrzymanie"],
+  tH: "Lacznie Siano",
+  tY: "Lacznie Sianokisz.",
+  ton: "tony SM",
+  skT: "Jaka pasze masz w magazynie?",
+  skD: "Dodaj kazda partie osobno.",
+  nb: "Ile bel?",
+  bw: "Waga/bela (kg)",
+  dc: "SM",
+  sl: "Straty magaz.",
+  slHelp: "O stratach magazynowych",
+  slExplain: "Typowe straty:",
+  slHayGood: "Siano dobrze przechow.: 2-5%",
+  slHayBad: "Siano zle przechow.: 10-20%",
+  slHylGood: "Sianokisz. dobrze opak.: 5-10%",
+  slHylBad: "Sianokisz. uszkodzona: 15-30%",
+  dt: "Data",
+  pr: "Cena/bela",
+  addL: "+ Dodaj partie",
+  lot: "Partia",
+  del: "Usun",
+  totB: "Lacznie bel",
+  totC: "Lacznie wydano",
+  avgP: "Srednia cena",
+  avgCT: "Koszt/t SM",
+  netS: "Zapas netto",
+  blT: "Twoj Bilans",
+  blD: "Na podstawie potrzeb i zapasow.",
+  youNeed: "Twoje konie potrzebuja",
+  youHave: "Masz na stanie",
+  enough: "Masz wystarczajaco",
+  shortage: "Brakuje ci",
+  enoughMsg: "Nadwyzka: {x} ton SM.",
+  shortMsg: "Brakuje {x} ton SM.",
+  withSafety: "Z {p}% marginesem, zaopatrz sie w:",
+  saf: "Margines",
+  safExplain: "Na nieprzewidziane. 10% to dobry start.",
+  planT: "Planuj produkcje i/lub zakupy",
+  planD: "Wlasna produkcja lub planowane zakupy.",
+  harvBa: "Ile bel?",
+  harvBW: "Waga beli (kg)",
+  harvDM: "SM (np. 0,85)",
+  harvTo: "= Tony SM",
+  harvDi: "Lub tony SM",
+  planBalePrice: "Cena/bela",
+  planTonnePrice: "Cena/tona",
+  planCost: "Szac. koszt",
+  iT: "Zrozumiec wynik",
+  iP: "Jesli BRAKUJE, liczba pokazuje ile musisz zdobyc.",
+  iN: "Jesli MASZ WYSTARCZAJACO, zachowaj margines.",
+  refT: "Referencia (INRA 2011)",
+  refS: "Dzienne SM (kg SM/dzien)",
+  rc: ["Dorosly", "Klacz zrebna", "Klacz karmiaca", "Ogier", "Zrebie 0-12m", "Zrebie 12-24m", "Mlody kon"],
+  sh: "Wierzch. 550kg",
+  po: "Kuc 300kg",
+  dh: "Zimnokrw. 700kg",
+  baleT: "Referencia: Wagi bel",
+  baleSrc: "Zrodla: Idele/Herbvalo 2021",
+  rB: "Bele okragle",
+  dia: "Srednica",
+  dwt: "Waga SM (kg)",
+  gwt: "Waga brutto (kg)",
+  str: "Sloma",
+  rst: "Od nowa",
+  ref: "Dane ref.",
+  cls: "Zamknij",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Eksport",
+  gen: "Wygenerowano",
+  costTi: "Koszty"
+};
+const TR_RO = {
+  app: "Calculator Bilant Furajer",
+  tl: "Rezilienta fermelor ecvine",
+  t0: "1. Necesar",
+  t1: "2. Stoc",
+  t2: "3. Rezultat",
+  whyT: "De ce planificati?",
+  whyP1: "Lipsa fanului iarna e costisitoare si daunatoare.",
+  whyP2: "Am suficient furaj pana la urmatoarea recolta?",
+  whyP3: "10 minute pot economisi mii de euro.",
+  aboutT: "Despre",
+  aboutP1: "EUnetHorse (Horizon Europe, nr. 101086551).",
+  aboutP2: "INRA (2011) si Idele/Herbvalo (2021).",
+  aboutP3: "Analiza de laborator pentru rezultate precise.",
+  start: "Incepe",
+  learnMore: "eunethorse.eu",
+  forageTip: "Analiza furajului",
+  discT: "Aviz legal",
+  bwT: "Regula de baza hranire",
+  bwP: "Caii ar trebui sa primeasca cel putin 1,5-2% din greutatea corporala (GC) in furaj pe zi in baza SU. Poate include pasune, leguminoase sau furaje conservate (fan, fan infasurat, substituenti precum cuburi de fan, pelete, pulpa de sfecla). Ingestia maxima zilnica SU este de obicei 2-2,5% din greutatea corporala.",
+  refsT: "Referinte stiintifice",
+  disc1: "Acest instrument este furnizat doar in scop educativ si informativ si nu constituie sfat veterinar sau nutritional. Nu inlocuieste examenul profesional. Consultati intotdeauna specialisti calificati (medic veterinar, nutritionist ecvin sau inginer agricol) pentru decizii privind sanatatea, hranirea si bunastarea calului si calitatea/cantitatea de furaj. Autorii si proiectul EUnetHorse nu accepta responsabilitatea.",
+  disc2: "Aceasta aplicatie nu colecteaza, stocheaza sau transmite date personale. Toate informatiile raman pe dispozitivul dvs.",
+  disc3: "Instrument digital gratuit dezvoltat in proiectul EUnetHorse (Horizon Europe #101086551). Reproducerea permisa cu atribuire.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Cat furaj au nevoie caii?",
+  rqD: "Pentru fiecare categorie: zile, kg/zi, numar de cai.",
+  hay: "Fan",
+  hyl: "Fan infasurat",
+  dmT: "Substanta Uscata (SU)",
+  dmWhat: "Ce este SU?",
+  dmExplain1: "Tot furajul contine apa. SU este partea nutritiva.",
+  dmExplain2: "Ca un burete: apa iese, ramane SU.",
+  dmExplain3: "Caii au nevoie de NUTRITIE, nu apa. La 60% SU calul trebuie sa manance mai mult.",
+  dmHow: "Intrebati furnizorul sau trimiteti proba la laborator.",
+  dmFormat: "SU ca zecimala: 0,85 inseamna 85%.",
+  dmTypHay: "SU tipic Fan: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "SU tipic Fan inf.: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "SU Fan",
+  dmHylLabel: "SU Fan inf.",
+  dmMissing: "Introduceti valorile SU mai sus.",
+  nutrT: "Fan vs Fan infasurat - Comparatie",
+  nutrD: "Calculatorul foloseste SU, dar exista alte diferente nutritionale:",
+  nutrParam: "Nutrient",
+  nutrHay: "Fan",
+  nutrHyl: "Fan infasurat",
+  nutrWhy: "Note",
+  nutrExtra1: "Fanul infasurat pastreaza frunzele bogate in nutrienti.",
+  nutrExtra2: "Fanul infasurat poate fi cosit mai devreme, cand este mai digestiv.",
+  nutrExtra3: "Fanul infasurat nu are praf - ideal pentru cai cu probleme respiratorii.",
+  cat: "Categorie",
+  dur: "Cate zile?",
+  gk: "kg/zi (brut)",
+  dk: "SU/zi",
+  nh: "Cati?",
+  tdm: "Total",
+  c: ["Iepe cu manji", "Iepe fara manji", "Manji intarcati", "Manji 1-2 ani", "Cai tineri 2-3 ani", "Armasari", "Adulti munca", "Adulti intretinere"],
+  tH: "Total Fan",
+  tY: "Total Fan inf.",
+  ton: "tone SU",
+  skT: "Ce furaje aveti in stoc?",
+  skD: "Adaugati fiecare lot separat.",
+  nb: "Cate baloturi?",
+  bw: "Greutate/balot (kg)",
+  dc: "SU",
+  sl: "Pierderi depoz.",
+  slHelp: "Despre pierderi de depozitare",
+  slExplain: "Pierderi tipice:",
+  slHayGood: "Fan bine depozitat: 2-5%",
+  slHayBad: "Fan prost depozitat: 10-20%",
+  slHylGood: "Fan inf. bine ambalat: 5-10%",
+  slHylBad: "Fan inf. deteriorat: 15-30%",
+  dt: "Data",
+  pr: "Pret/balot",
+  addL: "+ Adauga lot",
+  lot: "Lot",
+  del: "Sterge",
+  totB: "Total baloturi",
+  totC: "Total cheltuit",
+  avgP: "Pret mediu",
+  avgCT: "Cost/t SU",
+  netS: "Stoc net",
+  blT: "Bilantul Dvs.",
+  blD: "Pe baza nevoilor si stocului.",
+  youNeed: "Caii au nevoie de",
+  youHave: "Aveti in stoc",
+  enough: "Aveti suficient",
+  shortage: "Va lipseste",
+  enoughMsg: "Surplus: {x} tone SU.",
+  shortMsg: "Lipsesc {x} tone SU.",
+  withSafety: "Cu {p}% marja, ar trebui sa procurati:",
+  saf: "Marja",
+  safExplain: "Pentru neprevazut. 10% e bun.",
+  planT: "Planificati productia si/sau achizitii",
+  planD: "Productie proprie sau achizitii planificate.",
+  harvBa: "Cate baloturi?",
+  harvBW: "Greutate balot (kg)",
+  harvDM: "SU (ex: 0,85)",
+  harvTo: "= Tone SU",
+  harvDi: "Sau tone SU",
+  planBalePrice: "Pret/balot",
+  planTonnePrice: "Pret/tona",
+  planCost: "Cost estimat",
+  iT: "Intelegerea rezultatului",
+  iP: "Daca LIPSESTE, cifra arata cat trebuie sa procurati.",
+  iN: "Daca aveti SUFICIENT, pastrati marja.",
+  refT: "Referinta (INRA 2011)",
+  refS: "Ingestie zilnica (kg SU/zi)",
+  rc: ["Adult", "Iapa gestanta", "Iapa lactatie", "Armasar", "Manz 0-12 luni", "Manz 12-24 luni", "Cal tanar"],
+  sh: "Calarie 550kg",
+  po: "Ponei 300kg",
+  dh: "Tractiune 700kg",
+  baleT: "Referinta: Greutate baloturi",
+  baleSrc: "Surse: Idele/Herbvalo 2021",
+  rB: "Baloturi rotunde",
+  dia: "Diametru",
+  dwt: "Greutate SU (kg)",
+  gwt: "Greutate bruta (kg)",
+  str: "Paie",
+  rst: "De la inceput",
+  ref: "Date referinta",
+  cls: "Inchide",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Export",
+  gen: "Generat",
+  costTi: "Sumar costuri"
+};
+const TR_FI = {
+  app: "Rehutaselaskuri",
+  tl: "Hevostilojen kestavyys",
+  t0: "1. Tarve",
+  t1: "2. Varasto",
+  t2: "3. Tulos",
+  whyT: "Miksi suunnitella?",
+  whyP1: "Heinan loppuminen talvella on kallista ja stressaavaa.",
+  whyP2: "Onko minulla tarpeeksi rehua?",
+  whyP3: "10 minuuttia voi saastaa tuhansia.",
+  aboutT: "Tietoa",
+  aboutP1: "EUnetHorse (Horizon Europe, nr 101086551).",
+  aboutP2: "INRA (2011) ja Idele/Herbvalo (2021).",
+  aboutP3: "Laboratorioanalyysi antaa parhaat tulokset.",
+  start: "Aloita",
+  learnMore: "eunethorse.eu",
+  forageTip: "Rehuanalyysi",
+  discT: "Oikeudellinen huomautus",
+  bwT: "Perusruokintaohje",
+  bwP: "Hevosten tulisi saada vahintaan 1,5-2% painostaan (PC) rehua paivassa KA-perusteisesti. Tama voi sisaltaa laitumen, palkokasveja tai sailottua rehua (heina, sailoheina, korvikkeita kuten heinakuutioita, heinapelletteja, sokerijuurikkaan leiketta). Maksimi paivittainen KA-saanti on yleensa 2-2,5% painosta.",
+  refsT: "Tieteelliset viitteet",
+  disc1: "Tama tyokalu on tarkoitettu ainoastaan koulutus- ja tiedotustarkoituksiin eika muodosta elainlaakarin tai ravitsemusneuvontaa. Se ei korvaa ammattilaisen tutkimusta. Konsultoi aina paatevaa asiantuntijaa (elainlaakari, hevosravintotieteilija tai maatalousinsinoori) hevosen terveyteen, ruokintaan ja hyvinvointiin seka rehun laatuun/maaraan liittyvissa paatoksissa. Tekijat ja EUnetHorse-hanke eivat ota vastuuta.",
+  disc2: "Tama sovellus ei kerae, tallenna tai valita henkilotietoja. Kaikki tiedot pysyvat laitteessasi.",
+  disc3: "Ilmainen digitaalinen tyokalu EUnetHorse-hankkeessa (Horizon Europe #101086551). Toisintaminen sallittu maininnalla.",
+  disc4: "2023-2027 EUnetHorse - Coby Bolger, Cristina Vierna (CTC) - www.eunethorse.eu",
+  rqT: "Paljonko rehua hevosesi tarvitsevat?",
+  rqD: "Jokaiselle kategorialle: paivat, kg/paiva, hevosten maara.",
+  hay: "Heina",
+  hyl: "Sailoheina",
+  dmT: "Kuiva-aine (KA)",
+  dmWhat: "Mika on Kuiva-aine?",
+  dmExplain1: "Kaikessa rehussa on vetta. KA on ravitseva osa.",
+  dmExplain2: "Kuin sieni: puristetaan vesi pois, jaljelle jaa KA.",
+  dmExplain3: "Hevoset tarvitsevat RAVINTOA, eivat vetta. 60% KA:lla hevonen syo enemman kg.",
+  dmHow: "Kysy toimittajalta tai lahetae nayte laboratorioon.",
+  dmFormat: "KA desimaalina: 0,85 tarkoittaa 85%.",
+  dmTypHay: "Tyypillinen Heinan KA: 0,70 - 0,85 (70-85%)",
+  dmTypHyl: "Tyypillinen Sailoheinan KA: 0,55 - 0,75 (55-75%)",
+  dmHayLabel: "KA Heina",
+  dmHylLabel: "KA Sailoheina",
+  dmMissing: "Syota KA-arvot ylla.",
+  nutrT: "Heina vs Sailoheina - Vertailu",
+  nutrD: "Laskuri kayttaa KA:ta, mutta on muita ravintoarvoerojaa:",
+  nutrParam: "Ravintoaine",
+  nutrHay: "Heina",
+  nutrHyl: "Sailoheina",
+  nutrWhy: "Huomautukset",
+  nutrExtra1: "Sailoheina sailyttaa ravinnerikkaat lehdet paremmin.",
+  nutrExtra2: "Sailoheina voidaan korjata aikaisemmin, kun rehu on sulavampaa.",
+  nutrExtra3: "Sailoheina ei polya - ideaali hengitystieongelmien kanssa hevosille.",
+  cat: "Kategoria",
+  dur: "Montako paivaa?",
+  gk: "kg/pv (tuore)",
+  dk: "KA/pv",
+  nh: "Montako?",
+  tdm: "Yhteensa",
+  c: ["Tammat varsoineen", "Tammat ilman varsaa", "Vieroitetut varsat", "Varsat 1-2 v", "Nuoret hevoset 2-3 v", "Oriit", "Tyossa olevat", "Yllapidossa olevat"],
+  tH: "Yhteensa Heina",
+  tY: "Yhteensa Sailoheina",
+  ton: "tonnia KA",
+  skT: "Mita rehua sinulla on varastossa?",
+  skD: "Lisaa jokainen era erikseen.",
+  nb: "Montako paalia?",
+  bw: "Paino/paali (kg)",
+  dc: "KA",
+  sl: "Varastotappio",
+  slHelp: "Varastotappioista",
+  slExplain: "Tyypilliset tappiot:",
+  slHayGood: "Heina hyvin varastoitu: 2-5%",
+  slHayBad: "Heina huonosti varastoitu: 10-20%",
+  slHylGood: "Sailoheina hyvin kaaritty: 5-10%",
+  slHylBad: "Sailoheina vaurioitunut: 15-30%",
+  dt: "Pvm",
+  pr: "Hinta/paali",
+  addL: "+ Lisaa era",
+  lot: "Era",
+  del: "Poista",
+  totB: "Paalit yht.",
+  totC: "Yht. kayt.",
+  avgP: "Keskim. hinta",
+  avgCT: "Kust./t KA",
+  netS: "Nettovarasto",
+  blT: "Rehutaseesi",
+  blD: "Tarpeiden ja varaston perusteella.",
+  youNeed: "Hevosesi tarvitsevat",
+  youHave: "Sinulla on varastossa",
+  enough: "Sinulla on tarpeeksi",
+  shortage: "Sinulta puuttuu",
+  enoughMsg: "Ylimaaraa: {x} tonnia KA.",
+  shortMsg: "Puuttuu {x} tonnia KA.",
+  withSafety: "{p}% marginaalilla sinun pitaisi hankkia:",
+  saf: "Marginaali",
+  safExplain: "Yllatyksiin. 10% hyva alku.",
+  planT: "Suunnittele tuotantoa ja/tai ostoja",
+  planD: "Oma tuotanto tai suunnitellut ostot.",
+  harvBa: "Montako paalia?",
+  harvBW: "Paalipaino (kg)",
+  harvDM: "KA (esim. 0,85)",
+  harvTo: "= Tonnia KA",
+  harvDi: "Tai tonnia KA",
+  planBalePrice: "Hinta/paali",
+  planTonnePrice: "Hinta/tonni",
+  planCost: "Arvioitu kust.",
+  iT: "Tuloksen tulkinta",
+  iP: "Jos PUUTTUU, luku kertoo paljonko pitaa hankkia.",
+  iN: "Jos on TARPEEKSI, pida marginaali.",
+  refT: "Viite (INRA 2011)",
+  refS: "KA-saanti (kg KA/pv)",
+  rc: ["Aikuinen", "Tiine tamma", "Imettava tamma", "Ori", "Varsa 0-12 kk", "Varsa 12-24 kk", "Nuori hevonen"],
+  sh: "Ratsu 550kg",
+  po: "Poni 300kg",
+  dh: "Tyohevonen 700kg",
+  baleT: "Viite: Paalien painot",
+  baleSrc: "Lahteet: Idele/Herbvalo 2021",
+  rB: "Pyoropaalit",
+  dia: "Halkaisija",
+  dwt: "KA-paino (kg)",
+  gwt: "Bruttopaino (kg)",
+  str: "Olki",
+  rst: "Aloita alusta",
+  ref: "Viitetiedot",
+  cls: "Sulje",
+  ep: "PDF",
+  ex: "Excel",
+  exp: "Vie",
+  gen: "Luotu",
+  costTi: "Kustannukset"
+};
+const TR = {
+  en: TR_EN,
+  fr: TR_FR,
+  es: TR_ES,
+  de: TR_DE,
+  pt: TR_PT,
+  pl: TR_PL,
+  ro: TR_RO,
+  fi: TR_FI
 };
 const pf = v => parseFloat(v) || 0;
-const fm = v => v === 0 ? "0.000" : v.toFixed(3);
-const fc = v => v === 0 ? "0" : v.toFixed(0);
+const fm = v => v.toFixed(1);
+const fm3 = v => v.toFixed(3);
+const fc = v => v.toFixed(0);
 const mR = () => Array.from({
   length: 8
 }, () => ({
@@ -950,18 +1201,99 @@ const Inp = ({
   step: step,
   style: {
     width: "100%",
-    padding: "5px 7px",
+    padding: "7px 9px",
     border: `2px solid ${P.ibd}`,
-    borderRadius: 5,
+    borderRadius: 6,
     background: disabled ? "#eee" : P.ibg,
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 600,
     color: P.teal,
     outline: "none",
     boxSizing: "border-box"
   }
 });
-const App = function App() {
+const Info = ({
+  children
+}) => /*#__PURE__*/React.createElement("div", {
+  style: {
+    padding: "10px 14px",
+    borderRadius: 8,
+    fontSize: 12,
+    lineHeight: 1.6,
+    background: "#E1F5FE",
+    borderLeft: `4px solid ${P.blue}`,
+    color: "#01579B",
+    margin: "10px 0"
+  }
+}, children);
+const Warn = ({
+  children
+}) => /*#__PURE__*/React.createElement("div", {
+  style: {
+    padding: "12px 16px",
+    borderRadius: 8,
+    fontSize: 13,
+    lineHeight: 1.6,
+    background: "#FFEBEE",
+    borderLeft: `4px solid ${P.red}`,
+    color: P.red,
+    margin: "10px 0",
+    fontWeight: 600
+  }
+}, children);
+const Card = ({
+  title,
+  icon,
+  children,
+  color
+}) => {
+  const colors = {
+    green: {
+      bg: "#E8F5E9",
+      bd: P.forest,
+      tc: P.forest
+    },
+    blue: {
+      bg: "#E1F5FE",
+      bd: P.blue,
+      tc: "#01579B"
+    },
+    purple: {
+      bg: "#F3E5F5",
+      bd: P.purple,
+      tc: "#4A148C"
+    },
+    amber: {
+      bg: "#FFF8E1",
+      bd: P.amber,
+      tc: P.orange
+    }
+  };
+  const c = colors[color] || colors.green;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: c.bg,
+      border: `2px solid ${c.bd}`,
+      borderRadius: 12,
+      padding: 16,
+      margin: "12px 0"
+    }
+  }, /*#__PURE__*/React.createElement("h4", {
+    style: {
+      color: c.tc,
+      fontSize: 14,
+      margin: "0 0 10px",
+      display: "flex",
+      alignItems: "center",
+      gap: 8
+    }
+  }, icon && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, icon), title), children);
+};
+function App() {
   const [lang, setLang] = useState("en");
   const [screen, setScreen] = useState("welcome");
   const [tab, setTab] = useState(0);
@@ -969,6 +1301,10 @@ const App = function App() {
   const [hdm, setHdm] = useState("");
   const [saf, setSaf] = useState(0.10);
   const [showRef, setShowRef] = useState(false);
+  const [showDmHelp, setShowDmHelp] = useState(false);
+  const [showNutr, setShowNutr] = useState(false);
+  const [showSlHelp, setShowSlHelp] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
   const [rq, setRq] = useState(mR);
   const [lo, setLo] = useState({
     hay: [mL()],
@@ -979,16 +1315,23 @@ const App = function App() {
       b: "",
       w: "",
       dm: "",
-      x: ""
+      x: "",
+      pb: "",
+      pt: ""
     },
     hyl: {
       b: "",
       w: "",
       dm: "",
-      x: ""
+      x: "",
+      pb: "",
+      pt: ""
     }
   });
   const t = TR[lang];
+  const hayP = pf(hayDm),
+    hylP = pf(hdm);
+  const hasHorsesNoDM = rq.some(c => pf(c.hay.n) > 0 && !hayDm || pf(c.hyl.n) > 0 && !hdm);
   const uRq = (ci, ty, f, v) => setRq(p => p.map((c, i) => i === ci ? {
     ...c,
     [ty]: {
@@ -1024,20 +1367,20 @@ const App = function App() {
     let h = 0,
       y = 0;
     rq.forEach(c => {
-      h += cT(c.hay, pf(hayDm));
-      y += cT(c.hyl, pf(hdm));
+      h += cT(c.hay, hayP);
+      y += cT(c.hyl, hylP);
     });
     return {
       h,
       y
     };
-  }, [rq, hayDm, hdm]);
+  }, [rq, hayP, hylP]);
   const gLS = useCallback(ty => {
     let tB = 0,
       tN = 0,
       tC = 0;
-    const dd = ty === "hay" ? .85 : .70,
-      dl = ty === "hay" ? .03 : .10;
+    const dd = ty === "hay" ? 0.85 : 0.70,
+      dl = ty === "hay" ? 0.03 : 0.10;
     lo[ty].forEach(l => {
       const b = pf(l.b),
         w = pf(l.w),
@@ -1057,27 +1400,20 @@ const App = function App() {
   }, [lo]);
   const gHD = useCallback(ty => {
     const h2 = hv[ty];
-    const fb = pf(h2.b) * pf(h2.w) * (pf(h2.dm) || 0) / 1000;
+    const dm2 = pf(h2.dm) || 0;
+    const fb = pf(h2.b) * pf(h2.w) * dm2 / 1000;
     return fb > 0 ? fb : pf(h2.x);
   }, [hv]);
-  const bl = useMemo(() => {
-    const sh = gLS("hay"),
-      sy = gLS("hyl"),
-      hH = gHD("hay"),
-      yH = gHD("hyl");
-    const hB = tot.h - (sh.tN + hH),
-      yB = tot.y - (sy.tN + yH);
-    return {
-      hB,
-      yB,
-      hP: hB > 0 ? hB * (1 + saf) : 0,
-      yP: yB > 0 ? yB * (1 + saf) : 0,
-      sh,
-      sy,
-      hH,
-      yH
-    };
-  }, [tot, gLS, gHD, saf]);
+  const sh = gLS("hay"),
+    sy = gLS("hyl");
+  const hH = gHD("hay"),
+    yH = gHD("hyl");
+  const gapH = tot.h - sh.tN,
+    gapY = tot.y - sy.tN;
+  const finalH = gapH - hH,
+    finalY = gapY - yH;
+  const purH = finalH > 0 ? finalH * (1 + saf) : 0,
+    purY = finalY > 0 ? finalY * (1 + saf) : 0;
   const resetAll = () => {
     setRq(mR());
     setLo({
@@ -1089,42 +1425,43 @@ const App = function App() {
         b: "",
         w: "",
         dm: "",
-        x: ""
+        x: "",
+        pb: "",
+        pt: ""
       },
       hyl: {
         b: "",
         w: "",
         dm: "",
-        x: ""
+        x: "",
+        pb: "",
+        pt: ""
       }
     });
     setHayDm("");
     setHdm("");
     setSaf(.10);
+    setShowPlan(false);
   };
   const doXL = () => {
     const wb = XLSX.utils.book_new();
-    const d1 = [["Digital Tools by EUnetHorse - " + t.app], [t.gen + ": " + new Date().toLocaleDateString()], [], [t.cat, t.ft, t.dur, t.gk, t.dk, t.nh, t.tdm]];
+    const d1 = [["Digital Tools by EUnetHorse - " + t.app], [t.gen + ": " + new Date().toLocaleDateString()], [], [t.cat, "Type", t.dur, t.gk, t.dk, t.nh, t.tdm]];
     rq.forEach((c, i) => ["hay", "hyl"].forEach(ty => {
       const r = c[ty],
-        p2 = ty === "hay" ? pf(hayDm) : pf(hdm),
+        p2 = ty === "hay" ? hayP : hylP,
         t2 = cT(r, p2);
       if (pf(r.d) || pf(r.g)) d1.push([t.c[i], ty === "hay" ? t.hay : t.hyl, pf(r.d) || "", pf(r.g) || "", cDM(r, p2) ? +cDM(r, p2).toFixed(2) : "", pf(r.n) || "", t2 ? +t2.toFixed(3) : ""]);
     }));
-    d1.push([], [t.tH, "", "", "", "", "", +tot.h.toFixed(3)], [t.tY, "", "", "", "", "", +tot.y.toFixed(3)]);
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(d1), t.t0);
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([[t.blT], ["", t.hay, t.hyl], [t.need, +tot.h.toFixed(3), +tot.y.toFixed(3)], [t.stk, +bl.sh.tN.toFixed(3), +bl.sy.tN.toFixed(3)], [t.harv, +bl.hH.toFixed(3), +bl.yH.toFixed(3)], [t.bal, +bl.hB.toFixed(3), +bl.yB.toFixed(3)], [], [t.saf, saf * 100 + "%"], [t.pur, +bl.hP.toFixed(3), +bl.yP.toFixed(3)]]), t.t2);
-    XLSX.writeFile(wb, `Digital_Tools_Fodder_Balance_${lang.toUpperCase()}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(d1), "Needs");
+    XLSX.writeFile(wb, `EUnetHorse_Fodder_Balance_${lang.toUpperCase()}.xlsx`);
   };
   const s = {
-    fontFamily: "'Segoe UI',Arial,sans-serif",
+    fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif",
     maxWidth: 940,
     margin: "0 auto",
     background: "#fff",
     minHeight: "100vh"
   };
-
-  // Language bar (shared)
   const LangBar = () => /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -1135,25 +1472,23 @@ const App = function App() {
     key: c,
     onClick: () => setLang(c),
     style: {
-      padding: "5px 9px",
+      padding: "6px 10px",
       borderRadius: 6,
       border: lang === c ? "2px solid #fff" : "2px solid transparent",
       background: lang === c ? "rgba(255,255,255,.25)" : "transparent",
       color: "#fff",
       cursor: "pointer",
-      fontSize: 15,
+      fontSize: 16,
       fontWeight: lang === c ? 700 : 400
     }
   }, FL[c])));
-
-  // ═══ WELCOME SCREEN ═══
-  if (screen === "welcome") return /*#__PURE__*/React.createElement("div", {
-    style: s
-  }, /*#__PURE__*/React.createElement("div", {
+  const Hdr = ({
+    big
+  }) => /*#__PURE__*/React.createElement("div", {
     style: {
       background: `linear-gradient(135deg,${P.teal},${P.forest} 40%,${P.mid})`,
       color: "#fff",
-      padding: "20px 24px 18px"
+      padding: big ? "24px 24px 20px" : "14px 20px 12px"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1163,94 +1498,262 @@ const App = function App() {
       flexWrap: "wrap",
       gap: 8
     }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 30,
+      cursor: "pointer"
+    },
+    onClick: () => setScreen("welcome")
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      fontSize: big ? 32 : 24,
       fontWeight: 900,
       letterSpacing: -.5,
-      lineHeight: 1,
-      margin: 0
+      margin: 0,
+      lineHeight: 1
     }
   }, "Digital Tools"), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 13,
-      opacity: .8,
+      fontSize: big ? 14 : 11,
+      opacity: .9,
       marginTop: 3
     }
-  }, "by ", /*#__PURE__*/React.createElement("b", null, "EUnetHorse"))), /*#__PURE__*/React.createElement(LangBar, null))), /*#__PURE__*/React.createElement("div", {
+  }, "by ", /*#__PURE__*/React.createElement("b", null, "EUnetHorse")), !big && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 5,
+      fontSize: 12,
+      fontWeight: 600,
+      color: P.paleY
+    }
+  }, t.app)), /*#__PURE__*/React.createElement(LangBar, null)));
+  const LegalFooter = ({
+    full
+  }) => full ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "20px 16px",
+      background: "#f5f7f0",
+      borderTop: `2px solid ${P.pale}`,
+      fontSize: 11,
+      lineHeight: 1.7,
+      color: "#555"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 720,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14,
+      padding: 12,
+      background: "#fff",
+      borderLeft: `4px solid ${P.teal}`,
+      borderRadius: 6
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      color: P.teal,
+      marginBottom: 6,
+      fontSize: 12
+    }
+  }, "\u2696\uFE0F " + t.discT), t.disc1), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14,
+      padding: 12,
+      background: "#fff",
+      borderLeft: `4px solid ${P.forest}`,
+      borderRadius: 6
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      color: P.forest,
+      marginBottom: 6,
+      fontSize: 12
+    }
+  }, "\uD83D\uDD12 Privacy"), t.disc2), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "#888",
+      textAlign: "center",
+      lineHeight: 1.7
+    }
+  }, /*#__PURE__*/React.createElement("div", null, t.disc3), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 4
+    }
+  }, "© ", t.disc4)))) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "14px 16px",
+      background: "#f5f7f0",
+      borderTop: `1px solid ${P.pale}`,
+      fontSize: 10,
+      lineHeight: 1.6,
+      color: "#888",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, t.disc3), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 3
+    }
+  }, "© ", t.disc4));
+  const RefsFooter = () => /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "14px 16px",
+      background: "#fafcf6",
+      borderTop: `1px solid ${P.pale}`,
+      fontSize: 11,
+      lineHeight: 1.7,
+      color: "#555"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 720,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      color: P.teal,
+      marginBottom: 6,
+      fontSize: 12
+    }
+  }, "\uD83D\uDCDA " + t.refsT), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      margin: 0,
+      paddingLeft: 18,
+      fontSize: 11
+    }
+  }, /*#__PURE__*/React.createElement("li", {
+    style: {
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.merckvetmanual.com/management-and-nutrition/nutrition-horses/nutritional-requirements-of-horses-and-other-equids",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      color: P.teal,
+      textDecoration: "none",
+      wordBreak: "break-all"
+    }
+  }, "Merck Veterinary Manual - Nutritional Requirements of Horses")), /*#__PURE__*/React.createElement("li", {
+    style: {
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10135103/",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      color: P.teal,
+      textDecoration: "none",
+      wordBreak: "break-all"
+    }
+  }, "PubMed Central - PMC10135103 (Equine Nutrition)")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.sciencedirect.com/science/article/abs/pii/S073708061100387X",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      color: P.teal,
+      textDecoration: "none",
+      wordBreak: "break-all"
+    }
+  }, "ScienceDirect - Journal of Equine Veterinary Science")))));
+  /* ═══ WELCOME ═══ */
+  if (screen === "welcome") return /*#__PURE__*/React.createElement("div", {
+    style: s
+  }, /*#__PURE__*/React.createElement(Hdr, {
+    big: true
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "24px 20px",
-      maxWidth: 700
+      maxWidth: 720
     }
   }, /*#__PURE__*/React.createElement("h2", {
     style: {
       color: P.teal,
-      fontSize: 20,
-      margin: "0 0 4px"
+      fontSize: 24,
+      margin: "0 0 6px"
     }
   }, t.app), /*#__PURE__*/React.createElement("p", {
     style: {
       color: P.mid,
       fontSize: 13,
-      margin: "0 0 20px",
+      margin: "0 0 24px",
       fontStyle: "italic"
     }
-  }, t.tl), /*#__PURE__*/React.createElement("h3", {
+  }, t.tl), /*#__PURE__*/React.createElement(Card, {
+    title: t.whyT,
+    icon: "\uD83D\uDCA1",
+    color: "green"
+  }, /*#__PURE__*/React.createElement("p", {
     style: {
-      color: P.forest,
-      fontSize: 15,
-      margin: "20px 0 8px"
+      fontSize: 13,
+      lineHeight: 1.7,
+      margin: "0 0 8px",
+      color: "#333"
     }
-  }, t.aboutT), /*#__PURE__*/React.createElement("p", {
+  }, t.whyP1), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      lineHeight: 1.7,
+      margin: "0 0 8px",
+      color: "#333"
+    }
+  }, t.whyP2), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 14,
+      lineHeight: 1.7,
+      fontWeight: 700,
+      color: P.forest,
+      margin: 0
+    }
+  }, t.whyP3)), /*#__PURE__*/React.createElement(Card, {
+    title: t.aboutT,
+    icon: "\u2139\uFE0F",
+    color: "blue"
+  }, /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 13,
       lineHeight: 1.6,
-      color: "#333",
-      margin: "0 0 12px"
+      margin: "0 0 6px",
+      color: "#333"
     }
   }, t.aboutP1), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 13,
       lineHeight: 1.6,
-      color: "#333",
-      margin: "0 0 12px"
+      margin: 0,
+      color: "#555"
     }
-  }, t.aboutP2), /*#__PURE__*/React.createElement("div", {
+  }, t.aboutP2)), /*#__PURE__*/React.createElement(Card, {
+    title: t.forageTip,
+    icon: "\uD83E\uDDEA",
+    color: "amber"
+  }, /*#__PURE__*/React.createElement("p", {
     style: {
-      background: "#FFF8E1",
-      border: `2px solid ${P.lime}`,
-      borderRadius: 8,
-      padding: 14,
-      margin: "16px 0"
-    }
-  }, /*#__PURE__*/React.createElement("h4", {
-    style: {
-      color: P.forest,
       fontSize: 13,
-      margin: "0 0 6px"
-    }
-  }, "🔬 ", t.forageTip), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 12,
-      lineHeight: 1.5,
-      color: "#555",
-      margin: 0
+      lineHeight: 1.6,
+      margin: 0,
+      color: "#555"
     }
   }, t.aboutP3)), /*#__PURE__*/React.createElement("button", {
     onClick: () => setScreen("calc"),
     style: {
       display: "block",
       width: "100%",
-      padding: "14px 24px",
+      padding: "18px 24px",
       background: `linear-gradient(135deg,${P.teal},${P.mid})`,
       color: "#fff",
       border: "none",
-      borderRadius: 8,
-      fontSize: 16,
+      borderRadius: 12,
+      fontSize: 19,
       fontWeight: 700,
       cursor: "pointer",
-      margin: "20px 0 16px",
-      letterSpacing: .5
+      margin: "24px 0 16px",
+      letterSpacing: .5,
+      boxShadow: "0 4px 12px rgba(0,100,100,.3)"
     }
   }, t.start, " →"), /*#__PURE__*/React.createElement("a", {
     href: "https://eunethorse.eu",
@@ -1261,85 +1764,70 @@ const App = function App() {
       textAlign: "center",
       color: P.mid,
       fontSize: 12,
-      margin: "0 0 20px"
+      margin: "0 0 12px",
+      textDecoration: "none"
     }
-  }, t.learnMore), /*#__PURE__*/React.createElement("details", {
-    style: {
-      margin: "16px 0",
-      border: `1px solid #ddd`,
-      borderRadius: 8,
-      overflow: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement("summary", {
-    style: {
-      padding: "10px 14px",
-      background: "#f5f5f5",
-      cursor: "pointer",
-      fontWeight: 600,
-      fontSize: 12,
-      color: P.teal
-    }
-  }, t.discT), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "12px 14px",
-      fontSize: 11,
-      lineHeight: 1.6,
-      color: "#555"
-    }
-  }, t.disc)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      borderTop: `1px solid #eee`,
-      paddingTop: 12,
-      marginTop: 12,
-      fontSize: 10,
-      color: "#aaa",
-      textAlign: "center"
-    }
-  }, "EUnetHorse - Horizon Europe - Grant Agreement No. 101086551", /*#__PURE__*/React.createElement("br", null), "15 partners - 9 countries - 2023-2027")));
+  }, "\uD83C\uDF10 " + t.learnMore)), /*#__PURE__*/React.createElement(LegalFooter, {
+    full: true
+  }));
 
-  // ═══ CALCULATOR SCREEN ═══
-  const sh = bl.sh,
-    sy = bl.sy;
+  /* ═══ CALCULATOR ═══ */
+  const ResultCard = ({
+    label,
+    value,
+    isShort,
+    ton
+  }) => /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      padding: 16,
+      borderRadius: 12,
+      minWidth: 170,
+      background: isShort ? "#FFEBEE" : "#E8F5E9",
+      border: `3px solid ${isShort ? P.red : P.forest}`,
+      boxShadow: "0 2px 8px rgba(0,0,0,.06)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 800,
+      color: isShort ? P.red : P.forest,
+      marginBottom: 6,
+      display: "flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, isShort ? "\u26A0\uFE0F" : "\u2705", " ", isShort ? t.shortage : t.enough), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      marginBottom: 4,
+      color: "#333"
+    }
+  }, label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 30,
+      fontWeight: 800,
+      color: isShort ? P.red : P.forest,
+      lineHeight: 1.1
+    }
+  }, fm(Math.abs(value))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#666",
+      fontWeight: 600
+    }
+  }, ton), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#555",
+      marginTop: 8,
+      lineHeight: 1.5
+    }
+  }, isShort ? t.shortMsg.replace("{x}", fm(Math.abs(value))) : t.enoughMsg.replace("{x}", fm(Math.abs(value)))));
   return /*#__PURE__*/React.createElement("div", {
     style: s
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: `linear-gradient(135deg,${P.teal},${P.forest} 40%,${P.mid})`,
-      color: "#fff",
-      padding: "14px 20px 12px"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      flexWrap: "wrap",
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
-    style: {
-      fontSize: 24,
-      fontWeight: 900,
-      letterSpacing: -.5,
-      lineHeight: 1,
-      margin: 0,
-      cursor: "pointer"
-    },
-    onClick: () => setScreen("welcome")
-  }, "Digital Tools"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 11,
-      opacity: .8,
-      marginTop: 2
-    }
-  }, "by ", /*#__PURE__*/React.createElement("b", null, "EUnetHorse")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 5,
-      fontSize: 12,
-      fontWeight: 600,
-      color: P.paleY
-    }
-  }, t.app)), /*#__PURE__*/React.createElement(LangBar, null))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Hdr, null), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       background: P.pale,
@@ -1350,19 +1838,20 @@ const App = function App() {
     onClick: () => setTab(i),
     style: {
       flex: 1,
-      padding: "10px 0",
+      padding: "12px 4px",
       border: "none",
       cursor: "pointer",
       background: tab === i ? P.teal : "transparent",
       color: tab === i ? "#fff" : P.teal,
       fontWeight: 700,
-      fontSize: 13
+      fontSize: 12,
+      transition: "all .2s"
     }
   }, l))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 6,
-      padding: "7px 14px",
+      padding: "8px 14px",
       background: "#f7f9f5",
       borderBottom: "1px solid #e8e8e0",
       flexWrap: "wrap",
@@ -1371,46 +1860,38 @@ const App = function App() {
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowRef(true),
     style: {
-      padding: "4px 10px",
-      background: P.pale,
+      padding: "5px 12px",
+      background: "#fff",
       border: `1px solid ${P.mid}`,
-      borderRadius: 5,
+      borderRadius: 6,
       color: P.forest,
       fontWeight: 600,
       fontSize: 11,
       cursor: "pointer"
     }
-  }, t.ref), /*#__PURE__*/React.createElement("button", {
+  }, "\uD83D\uDCCA " + t.ref), /*#__PURE__*/React.createElement("button", {
     onClick: resetAll,
     style: {
-      padding: "4px 10px",
-      background: "#FBE9E7",
+      padding: "5px 12px",
+      background: "#fff",
       border: `1px solid ${P.red}`,
-      borderRadius: 5,
+      borderRadius: 6,
       color: P.red,
       fontWeight: 600,
       fontSize: 11,
       cursor: "pointer"
     }
-  }, t.rst), /*#__PURE__*/React.createElement("div", {
+  }, "\u21BB " + t.rst), /*#__PURE__*/React.createElement("div", {
     style: {
       flex: 1
     }
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 10,
-      fontWeight: 600,
-      color: "#999",
-      textTransform: "uppercase",
-      letterSpacing: 1
-    }
-  }, t.exp, ":"), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement("button", {
     onClick: () => window.print(),
     style: {
-      padding: "4px 12px",
+      padding: "5px 12px",
       background: P.red,
       border: "none",
-      borderRadius: 5,
+      borderRadius: 6,
       color: "#fff",
       fontWeight: 700,
       fontSize: 11,
@@ -1419,10 +1900,10 @@ const App = function App() {
   }, t.ep), /*#__PURE__*/React.createElement("button", {
     onClick: doXL,
     style: {
-      padding: "4px 12px",
+      padding: "5px 12px",
       background: P.forest,
       border: "none",
-      borderRadius: 5,
+      borderRadius: 6,
       color: "#fff",
       fontWeight: 700,
       fontSize: 11,
@@ -1430,80 +1911,253 @@ const App = function App() {
     }
   }, t.ex)), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "14px 14px 80px"
+      padding: "16px 14px 20px"
     }
   }, tab === 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       color: P.teal,
-      fontSize: 17,
-      margin: "0 0 3px"
+      fontSize: 18,
+      margin: "0 0 6px"
     }
   }, t.rqT), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#666",
       fontSize: 12,
-      margin: "0 0 10px"
+      lineHeight: 1.5,
+      margin: "0 0 12px"
     }
-  }, t.rqD), /*#__PURE__*/React.createElement("div", {
+  }, t.rqD), /*#__PURE__*/React.createElement(Card, {
+    title: t.bwT,
+    icon: "\u2696\uFE0F",
+    color: "blue"
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12,
+      lineHeight: 1.6,
+      margin: 0,
+      color: "#333"
+    }
+  }, t.bwP)), /*#__PURE__*/React.createElement(Card, {
+    title: t.dmT,
+    icon: "\uD83D\uDCA7",
+    color: "blue"
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
-      gap: 10,
-      marginBottom: 12,
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 10,
       flexWrap: "wrap",
-      alignItems: "center"
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowDmHelp(!showDmHelp),
+    style: {
+      padding: "5px 12px",
+      border: `1px solid ${P.blue}`,
+      borderRadius: 6,
+      background: "#fff",
+      color: "#01579B",
+      fontWeight: 600,
+      fontSize: 11,
+      cursor: "pointer"
+    }
+  }, "\u2753 " + t.dmWhat, " ", showDmHelp ? "\u25B2" : "\u25BC"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowNutr(!showNutr),
+    style: {
+      padding: "5px 12px",
+      border: `1px solid ${P.purple}`,
+      borderRadius: 6,
+      background: "#fff",
+      color: P.purple,
+      fontWeight: 600,
+      fontSize: 11,
+      cursor: "pointer"
+    }
+  }, "\uD83D\uDCC8 " + t.nutrT, " ", showNutr ? "\u25B2" : "\u25BC")), showDmHelp && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#fff",
+      borderRadius: 8,
+      padding: 14,
+      marginBottom: 10,
+      fontSize: 12,
+      lineHeight: 1.7,
+      color: "#333"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 10px"
+    }
+  }, t.dmExplain1), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 10px"
+    }
+  }, t.dmExplain2), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 10px",
+      fontWeight: 600,
+      color: P.forest
+    }
+  }, t.dmExplain3), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 10px",
+      fontStyle: "italic",
+      color: "#666"
+    }
+  }, "\uD83C\uDFDB\uFE0F " + t.dmHow), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: 0,
+      fontWeight: 700,
+      color: P.teal
+    }
+  }, "\uD83D\uDCDD " + t.dmFormat)), showNutr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#fff",
+      borderRadius: 8,
+      padding: 14,
+      marginBottom: 10,
+      fontSize: 11,
+      lineHeight: 1.6
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 8px",
+      color: "#555"
+    }
+  }, t.nutrD), /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      width: "100%",
+      borderCollapse: "collapse",
+      fontSize: 11
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      background: P.purple,
+      color: "#fff"
+    }
+  }, /*#__PURE__*/React.createElement("th", {
+    style: {
+      padding: 6,
+      textAlign: "left"
+    }
+  }, t.nutrParam), /*#__PURE__*/React.createElement("th", {
+    style: {
+      padding: 6
+    }
+  }, t.nutrHay), /*#__PURE__*/React.createElement("th", {
+    style: {
+      padding: 6
+    }
+  }, t.nutrHyl))), /*#__PURE__*/React.createElement("tbody", null, NUTR.map((n, i) => /*#__PURE__*/React.createElement("tr", {
+    key: i,
+    style: {
+      background: i % 2 === 0 ? "#faf5ff" : "#fff"
+    }
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      padding: 5,
+      fontWeight: 600,
+      color: "#333"
+    }
+  }, n.p), /*#__PURE__*/React.createElement("td", {
+    style: {
+      padding: 5,
+      textAlign: "center"
+    }
+  }, n.h), /*#__PURE__*/React.createElement("td", {
+    style: {
+      padding: 5,
+      textAlign: "center",
+      fontWeight: 600,
+      color: P.purple
+    }
+  }, n.y)))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 10,
+      padding: 10,
+      background: "#faf5ff",
+      borderRadius: 6
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 11,
+      color: "#333"
+    }
+  }, "\u2022 " + t.nutrExtra1), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 11,
+      color: "#333"
+    }
+  }, "\u2022 " + t.nutrExtra2), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 11,
+      color: "#333"
+    }
+  }, "\u2022 " + t.nutrExtra3))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap",
+      alignItems: "flex-start"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: "1 1 140px"
+      flex: "1 1 160px"
     }
   }, /*#__PURE__*/React.createElement("label", {
     style: {
-      fontSize: 10,
-      fontWeight: 600,
-      color: P.forest
+      fontSize: 12,
+      fontWeight: 700,
+      color: P.forest,
+      display: "block",
+      marginBottom: 3
     }
-  }, t.hayDm), /*#__PURE__*/React.createElement(Inp, {
+  }, t.dmHayLabel), /*#__PURE__*/React.createElement(Inp, {
     value: hayDm,
-    onChange: v => setHayDm(v),
-    step: "0.01",
-    placeholder: "0.85"
-  })), /*#__PURE__*/React.createElement("div", {
+    onChange: setHayDm,
+    step: "0.01"
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: "1 1 140px"
+      fontSize: 10,
+      color: "#666",
+      marginTop: 4,
+      fontStyle: "italic"
+    }
+  }, "\uD83D\uDCA1 " + t.dmTypHay)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: "1 1 160px"
     }
   }, /*#__PURE__*/React.createElement("label", {
     style: {
-      fontSize: 10,
-      fontWeight: 600,
-      color: P.lime
+      fontSize: 12,
+      fontWeight: 700,
+      color: P.lime,
+      display: "block",
+      marginBottom: 3
     }
-  }, t.hdm), /*#__PURE__*/React.createElement(Inp, {
+  }, t.dmHylLabel), /*#__PURE__*/React.createElement(Inp, {
     value: hdm,
-    onChange: v => setHdm(v),
-    step: "0.01",
-    placeholder: "0.70"
-  })), /*#__PURE__*/React.createElement("div", {
+    onChange: setHdm,
+    step: "0.01"
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "6px 10px",
-      borderRadius: 5,
-      fontSize: 11,
-      borderLeft: `3px solid ${P.lime}`,
-      background: P.pale,
-      color: P.forest
+      fontSize: 10,
+      color: "#666",
+      marginTop: 4,
+      fontStyle: "italic"
     }
-  }, t.tip)), (!hayDm || !hdm) && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCA1 " + t.dmTypHyl)))), hasHorsesNoDM && /*#__PURE__*/React.createElement(Warn, null, "\u26A0\uFE0F " + t.dmMissing), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "8px 12px",
-      borderRadius: 5,
-      fontSize: 11,
-      background: "#FFF3E0",
-      borderLeft: `3px solid #FF9800`,
-      color: "#E65100",
-      marginBottom: 12
-    }
-  }, t.dmWarn), /*#__PURE__*/React.createElement("div", {
-    style: {
-      overflowX: "auto"
+      overflowX: "auto",
+      borderRadius: 8,
+      border: `1px solid ${P.pale}`
     }
   }, /*#__PURE__*/React.createElement("table", {
     style: {
@@ -1518,51 +2172,44 @@ const App = function App() {
     }
   }, /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
+      padding: 8,
       textAlign: "left",
       minWidth: 110,
-      fontWeight: 600,
       fontSize: 10
     }
   }, t.cat), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
-  }, t.ft), /*#__PURE__*/React.createElement("th", {
+  }), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
   }, t.dur), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
   }, t.gk), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
   }, t.dk), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
   }, t.nh), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: "6px 4px",
-      fontWeight: 600,
+      padding: 8,
       fontSize: 10
     }
   }, t.tdm))), /*#__PURE__*/React.createElement("tbody", null, rq.map((c, ci) => ["hay", "hyl"].map((ty, ti) => {
     const r = c[ty],
-      p2 = ty === "hay" ? pf(hayDm) : pf(hdm),
+      p2 = ty === "hay" ? hayP : hylP,
       dm = cDM(r, p2),
       t2 = cT(r, p2);
     return /*#__PURE__*/React.createElement("tr", {
@@ -1577,8 +2224,8 @@ const App = function App() {
         textAlign: "left",
         fontWeight: 600,
         color: P.teal,
-        fontSize: 10,
-        padding: 4
+        fontSize: 11,
+        padding: 6
       }
     }, t.c[ci]), /*#__PURE__*/React.createElement("td", {
       style: {
@@ -1589,14 +2236,14 @@ const App = function App() {
       }
     }, ty === "hay" ? t.hay : t.hyl), /*#__PURE__*/React.createElement("td", {
       style: {
-        padding: 2
+        padding: 3
       }
     }, /*#__PURE__*/React.createElement(Inp, {
       value: r.d,
       onChange: v => uRq(ci, ty, "d", v)
     })), /*#__PURE__*/React.createElement("td", {
       style: {
-        padding: 2
+        padding: 3
       }
     }, /*#__PURE__*/React.createElement(Inp, {
       value: r.g,
@@ -1606,11 +2253,11 @@ const App = function App() {
         textAlign: "center",
         fontWeight: 600,
         color: "#555",
-        fontSize: 10
+        fontSize: 11
       }
     }, dm > 0 ? dm.toFixed(1) : "-"), /*#__PURE__*/React.createElement("td", {
       style: {
-        padding: 2
+        padding: 3
       }
     }, /*#__PURE__*/React.createElement(Inp, {
       value: r.n,
@@ -1620,119 +2267,143 @@ const App = function App() {
         textAlign: "center",
         fontWeight: 700,
         color: t2 > 0 ? P.teal : "#bbb",
-        fontSize: 10
+        fontSize: 11
       }
-    }, t2 > 0 ? fm(t2) : "-"));
+    }, t2 > 0 ? fm3(t2) : "-"));
   }))))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: 10,
-      marginTop: 12,
+      marginTop: 14,
       flexWrap: "wrap"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, [{
+    l: t.tH,
+    v: tot.h,
+    c: P.forest,
+    bg: "#f0f7e8"
+  }, {
+    l: t.tY,
+    v: tot.y,
+    c: P.lime,
+    bg: "#f5f8e4"
+  }].map((x, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
     style: {
       flex: 1,
-      padding: "9px 12px",
-      borderRadius: 8,
-      background: "#f0f7e8",
-      borderLeft: `4px solid ${P.forest}`,
+      padding: "12px 16px",
+      borderRadius: 10,
+      background: x.bg,
+      borderLeft: `5px solid ${x.c}`,
       minWidth: 150
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 10,
-      fontWeight: 600,
-      color: P.forest
-    }
-  }, t.tH), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 20,
-      fontWeight: 800,
-      color: P.teal
-    }
-  }, fm(tot.h), " ", /*#__PURE__*/React.createElement("span", {
-    style: {
       fontSize: 11,
+      fontWeight: 600,
+      color: x.c
+    }
+  }, x.l), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 800,
+      color: P.teal,
+      marginTop: 2
+    }
+  }, fm3(x.v), " ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
       fontWeight: 400
     }
-  }, t.ton))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1,
-      padding: "9px 12px",
-      borderRadius: 8,
-      background: "#f5f8e4",
-      borderLeft: `4px solid ${P.lime}`,
-      minWidth: 150
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 10,
-      fontWeight: 600,
-      color: P.lime
-    }
-  }, t.tY), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 20,
-      fontWeight: 800,
-      color: P.forest
-    }
-  }, fm(tot.y), " ", /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 11,
-      fontWeight: 400
-    }
-  }, t.ton)))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "8px 10px",
-      borderRadius: 5,
-      fontSize: 11,
-      borderLeft: `3px solid ${P.lime}`,
-      background: P.pale,
-      color: P.forest,
-      marginTop: 12
-    }
-  }, "🔬 ", t.forageRec)), tab === 1 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+  }, t.ton)))))), tab === 1 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       color: P.teal,
-      fontSize: 17,
-      margin: "0 0 3px"
+      fontSize: 18,
+      margin: "0 0 6px"
     }
   }, t.skT), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#666",
       fontSize: 12,
-      margin: "0 0 12px"
+      lineHeight: 1.5,
+      margin: "0 0 14px"
     }
-  }, t.skD), ["hay", "hyl"].map(ty => {
+  }, t.skD), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowSlHelp(!showSlHelp),
+    style: {
+      padding: "7px 14px",
+      border: `1px solid ${P.mid}`,
+      borderRadius: 8,
+      background: "#fff",
+      color: P.forest,
+      fontWeight: 600,
+      fontSize: 12,
+      cursor: "pointer",
+      marginBottom: 10
+    }
+  }, "\uD83D\uDCE6 " + t.slHelp, " ", showSlHelp ? "\u25B2" : "\u25BC"), showSlHelp && /*#__PURE__*/React.createElement(Card, {
+    title: t.slHelp,
+    icon: "\uD83D\uDCE6",
+    color: "amber"
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "0 0 8px",
+      fontSize: 12,
+      color: "#555"
+    }
+  }, t.slExplain), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 12,
+      color: P.forest
+    }
+  }, "\u2705 " + t.slHayGood), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 12,
+      color: P.orange
+    }
+  }, "\u26A0\uFE0F " + t.slHayBad), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 12,
+      color: P.forest
+    }
+  }, "\u2705 " + t.slHylGood), /*#__PURE__*/React.createElement("p", {
+    style: {
+      margin: "3px 0",
+      fontSize: 12,
+      color: P.red
+    }
+  }, "\u26A0\uFE0F " + t.slHylBad)), ["hay", "hyl"].map(ty => {
     const isH = ty === "hay",
       ac = isH ? P.forest : P.lime,
       ls2 = lo[ty],
       st = gLS(ty),
-      dd = isH ? .85 : .70,
-      dl = isH ? .03 : .10;
+      dd = isH ? 0.85 : 0.70,
+      dl = isH ? 0.03 : 0.10;
     return /*#__PURE__*/React.createElement("div", {
       key: ty,
       style: {
-        marginBottom: 14,
-        padding: 12,
-        borderRadius: 8,
-        border: `2px solid ${isH ? "rgba(20,100,40,.12)" : "rgba(140,180,40,.12)"}`,
+        marginBottom: 16,
+        padding: 14,
+        borderRadius: 10,
+        border: `2px solid ${isH ? "rgba(20,100,40,.15)" : "rgba(140,180,40,.15)"}`,
         background: isH ? "#f8fbf5" : "#fafbe8"
       }
     }, /*#__PURE__*/React.createElement("h3", {
       style: {
         color: ac,
-        margin: "0 0 8px",
-        fontSize: 13
+        margin: "0 0 10px",
+        fontSize: 15
       }
-    }, isH ? t.hay : t.hyl), ls2.map((l, li) => /*#__PURE__*/React.createElement("div", {
+    }, isH ? "\uD83C\uDF3E " + t.hay : "\uD83C\uDF31 " + t.hyl), ls2.map((l, li) => /*#__PURE__*/React.createElement("div", {
       key: li,
       style: {
         background: "#fff",
         border: "1px solid #e0e0d8",
-        borderRadius: 6,
-        padding: "8px 10px",
+        borderRadius: 8,
+        padding: "10px 12px",
         marginBottom: 8
       }
     }, /*#__PURE__*/React.createElement("div", {
@@ -1740,11 +2411,11 @@ const App = function App() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 6
+        marginBottom: 8
       }
     }, /*#__PURE__*/React.createElement("span", {
       style: {
-        fontSize: 11,
+        fontSize: 12,
         fontWeight: 700,
         color: P.teal
       }
@@ -1753,21 +2424,21 @@ const App = function App() {
       style: {
         background: "#FBE9E7",
         border: `1px solid ${P.red}`,
-        borderRadius: 4,
+        borderRadius: 5,
         color: P.red,
         fontSize: 10,
         cursor: "pointer",
-        padding: "2px 8px"
+        padding: "3px 10px"
       }
     }, t.del)), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
-        gap: 6
+        gridTemplateColumns: "repeat(auto-fill,minmax(105px,1fr))",
+        gap: 8
       }
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
@@ -1777,7 +2448,7 @@ const App = function App() {
       type: "date"
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
@@ -1786,7 +2457,7 @@ const App = function App() {
       onChange: v => uLo(ty, li, "b", v)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
@@ -1795,29 +2466,29 @@ const App = function App() {
       onChange: v => uLo(ty, li, "w", v)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
-    }, t.dc, " (", dd, ")"), /*#__PURE__*/React.createElement(Inp, {
+    }, t.dc), /*#__PURE__*/React.createElement(Inp, {
       value: l.dm,
       onChange: v => uLo(ty, li, "dm", v),
       step: "0.01",
       placeholder: String(dd)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
-    }, t.sl, " (", dl, ")"), /*#__PURE__*/React.createElement(Inp, {
+    }, t.sl), /*#__PURE__*/React.createElement(Inp, {
       value: l.ls,
       onChange: v => uLo(ty, li, "ls", v),
       step: "0.01",
       placeholder: String(dl)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#666"
       }
@@ -1828,23 +2499,23 @@ const App = function App() {
     }))))), /*#__PURE__*/React.createElement("button", {
       onClick: () => addLo(ty),
       style: {
-        padding: "6px 14px",
-        background: P.pale,
-        border: `1px dashed ${P.mid}`,
-        borderRadius: 6,
+        padding: "8px 16px",
+        background: "#fff",
+        border: `2px dashed ${P.mid}`,
+        borderRadius: 8,
         color: P.forest,
         fontWeight: 600,
-        fontSize: 11,
+        fontSize: 12,
         cursor: "pointer",
-        width: "100%"
+        width: "100%",
+        marginBottom: 10
       }
     }, t.addL), /*#__PURE__*/React.createElement("div", {
       style: {
         background: P.teal,
         color: "#fff",
-        padding: "10px 12px",
-        borderRadius: 8,
-        marginTop: 10,
+        padding: "12px 14px",
+        borderRadius: 10,
         display: "flex",
         justifyContent: "space-between",
         flexWrap: "wrap",
@@ -1855,7 +2526,7 @@ const App = function App() {
       v: st.tB
     }, {
       l: t.netS,
-      v: fm(st.tN) + " t"
+      v: fm3(st.tN) + " t"
     }, {
       l: t.totC,
       v: fc(st.tC)
@@ -1872,8 +2543,8 @@ const App = function App() {
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontSize: 9,
-        opacity: .8
+        fontSize: 10,
+        opacity: .85
       }
     }, x.l), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -1881,63 +2552,228 @@ const App = function App() {
         fontWeight: 800
       }
     }, x.v)))));
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "7px 10px",
-      borderRadius: 5,
-      fontSize: 11,
-      borderLeft: `3px solid ${P.lime}`,
-      background: P.pale,
-      color: P.forest
-    }
-  }, t.stip)), tab === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+  })), tab === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       color: P.teal,
-      fontSize: 17,
-      margin: "0 0 3px"
+      fontSize: 18,
+      margin: "0 0 6px"
     }
   }, t.blT), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#666",
       fontSize: 12,
-      margin: "0 0 12px"
+      lineHeight: 1.5,
+      margin: "0 0 16px"
     }
-  }, t.blD), ["hay", "hyl"].map(ty => {
+  }, t.blD), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10,
+      marginBottom: 16,
+      fontSize: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#f8fbf5",
+      padding: 12,
+      borderRadius: 10,
+      borderLeft: `4px solid ${P.teal}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#888",
+      fontWeight: 600
+    }
+  }, t.youNeed), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 800,
+      color: P.teal,
+      marginTop: 4
+    }
+  }, fm3(tot.h), " t ", t.hay), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 800,
+      color: P.teal
+    }
+  }, fm3(tot.y), " t ", t.hyl)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#f8fbf5",
+      padding: 12,
+      borderRadius: 10,
+      borderLeft: `4px solid ${P.forest}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#888",
+      fontWeight: 600
+    }
+  }, t.youHave), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 800,
+      color: P.forest,
+      marginTop: 4
+    }
+  }, fm3(sh.tN), " t ", t.hay), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 800,
+      color: P.forest
+    }
+  }, fm3(sy.tN), " t ", t.hyl))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement(ResultCard, {
+    label: t.hay,
+    value: gapH,
+    isShort: gapH > 0,
+    ton: t.ton
+  }), /*#__PURE__*/React.createElement(ResultCard, {
+    label: t.hyl,
+    value: gapY,
+    isShort: gapY > 0,
+    ton: t.ton
+  })), (gapH > 0 || gapY > 0) && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      alignItems: "center",
+      flexWrap: "wrap",
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontWeight: 700,
+      color: P.teal,
+      fontSize: 13
+    }
+  }, "\uD83D\uDEE1\uFE0F " + t.saf, ":"), [5, 10, 15, 20].map(v => /*#__PURE__*/React.createElement("button", {
+    key: v,
+    onClick: () => setSaf(v / 100),
+    style: {
+      padding: "6px 14px",
+      borderRadius: 20,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontSize: 12,
+      background: Math.round(saf * 100) === v ? P.teal : "#fff",
+      color: Math.round(saf * 100) === v ? "#fff" : "#333",
+      border: Math.round(saf * 100) === v ? `2px solid ${P.teal}` : "2px solid #ccc"
+    }
+  }, v, "%"))), /*#__PURE__*/React.createElement(Info, null, t.safExplain), /*#__PURE__*/React.createElement(Card, {
+    title: t.withSafety.replace("{p}", String(Math.round(saf * 100))),
+    icon: "\uD83D\uDECD\uFE0F",
+    color: "amber"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 20,
+      flexWrap: "wrap"
+    }
+  }, gapH > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: "#666"
+    }
+  }, t.hay, ":"), " ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontSize: 18,
+      color: P.red
+    }
+  }, fm(purH), " t")), gapY > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: "#666"
+    }
+  }, t.hyl, ":"), " ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      fontSize: 18,
+      color: P.red
+    }
+  }, fm(purY), " t"))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 20,
+      border: `2px solid ${P.mid}`,
+      borderRadius: 12,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowPlan(!showPlan),
+    style: {
+      width: "100%",
+      padding: "14px 16px",
+      background: showPlan ? P.forest : P.pale,
+      color: showPlan ? "#fff" : P.forest,
+      border: "none",
+      cursor: "pointer",
+      fontWeight: 700,
+      fontSize: 14,
+      textAlign: "left",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCC5 " + t.planT), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, showPlan ? "\u25B2" : "\u25BC")), showPlan && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12,
+      color: "#555",
+      margin: "0 0 14px"
+    }
+  }, t.planD), ["hay", "hyl"].map(ty => {
     const isH = ty === "hay",
       h2 = hv[ty],
       ac = isH ? P.forest : P.lime,
-      dd2 = isH ? .85 : .70;
-    const fb = pf(h2.b) * pf(h2.w) * (pf(h2.dm) || dd2) / 1000;
+      dd2 = isH ? 0.85 : 0.65;
+    const dm2 = pf(h2.dm) || 0;
+    const fb = pf(h2.b) * pf(h2.w) * dm2 / 1000;
+    const totalDM = fb > 0 ? fb : pf(h2.x);
+    const costBale = pf(h2.b) * pf(h2.pb);
+    const costTonne = totalDM * pf(h2.pt);
+    const totalCost = costBale > 0 ? costBale : costTonne;
     return /*#__PURE__*/React.createElement("div", {
       key: ty,
       style: {
-        background: "#f0f7e8",
-        border: `1px solid ${P.mid}`,
-        borderRadius: 8,
-        padding: 12,
+        background: isH ? "#f8fbf5" : "#fafbe8",
+        border: `1px solid ${isH ? "rgba(20,100,40,.15)" : "rgba(140,180,40,.15)"}`,
+        borderRadius: 10,
+        padding: 14,
         margin: "10px 0"
       }
     }, /*#__PURE__*/React.createElement("h4", {
       style: {
-        color: P.forest,
-        fontSize: 12,
-        margin: "0 0 4px"
+        color: ac,
+        fontSize: 14,
+        margin: "0 0 10px"
       }
-    }, t.harvT, " - ", isH ? t.hay : t.hyl), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 10,
-        color: "#555",
-        marginBottom: 8
-      }
-    }, t.harvD), /*#__PURE__*/React.createElement("div", {
+    }, isH ? "\uD83C\uDF3E " + t.hay : "\uD83C\uDF31 " + t.hyl), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill,minmax(110px,1fr))",
-        gap: 6
+        gridTemplateColumns: "repeat(auto-fill,minmax(105px,1fr))",
+        gap: 8
       }
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#555"
       }
@@ -1946,7 +2782,7 @@ const App = function App() {
       onChange: v => uHv(ty, "b", v)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#555"
       }
@@ -1955,7 +2791,7 @@ const App = function App() {
       onChange: v => uHv(ty, "w", v)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#555"
       }
@@ -1966,23 +2802,23 @@ const App = function App() {
       placeholder: String(dd2)
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
-        color: ac,
-        fontWeight: 700
+        color: ac
       }
     }, t.harvTo), /*#__PURE__*/React.createElement("div", {
       style: {
-        padding: "5px 6px",
-        borderRadius: 4,
+        padding: "8px",
+        borderRadius: 6,
         fontWeight: 700,
-        fontSize: 11,
+        fontSize: 12,
         background: `${ac}15`,
-        color: ac
+        color: ac,
+        textAlign: "center"
       }
-    }, fm(fb))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    }, fm3(fb))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: 600,
         color: "#555"
       }
@@ -1992,301 +2828,47 @@ const App = function App() {
       step: "0.001",
       placeholder: "t DM",
       disabled: fb > 0
-    }))));
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      overflowX: "auto",
-      marginTop: 12
-    }
-  }, /*#__PURE__*/React.createElement("table", {
-    style: {
-      width: "100%",
-      borderCollapse: "collapse",
-      fontSize: 11
-    }
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: P.teal,
-      color: "#fff"
-    }
-  }, /*#__PURE__*/React.createElement("th", {
-    style: {
-      padding: "6px 4px",
-      textAlign: "left",
-      fontWeight: 600,
-      fontSize: 10
-    }
-  }), /*#__PURE__*/React.createElement("th", {
-    style: {
-      padding: "6px 4px",
-      fontWeight: 600,
-      fontSize: 10
-    }
-  }, t.hay, " (t DM)"), /*#__PURE__*/React.createElement("th", {
-    style: {
-      padding: "6px 4px",
-      fontWeight: 600,
-      fontSize: 10
-    }
-  }, t.hyl, " (t DM)"))), /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: "#f8fbf5"
-    }
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "left",
-      padding: "6px 8px",
-      fontWeight: 600
-    }
-  }, "A. ", t.need), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(tot.h)), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(tot.y))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "left",
-      padding: "6px 8px",
-      fontWeight: 600
-    }
-  }, "B. ", t.stk), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(sh.tN)), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(sy.tN))), /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: "#f8fbf5"
-    }
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "left",
-      padding: "6px 8px",
-      fontWeight: 600
-    }
-  }, "C. ", t.harv), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(bl.hH)), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 600
-    }
-  }, fm(bl.yH))), /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: P.teal,
-      color: "#fff"
-    }
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "left",
-      padding: 8,
-      fontWeight: 800,
-      fontSize: 13
-    }
-  }, t.bal, " (A-B-C)"), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 800,
-      fontSize: 15,
-      color: bl.hB > 0 ? "#FFCDD2" : "#C8E6C9"
-    }
-  }, fm(bl.hB)), /*#__PURE__*/React.createElement("td", {
-    style: {
-      textAlign: "center",
-      fontWeight: 800,
-      fontSize: 15,
-      color: bl.yB > 0 ? "#FFCDD2" : "#C8E6C9"
-    }
-  }, fm(bl.yB)))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 8,
-      alignItems: "center",
-      margin: "12px 0",
-      flexWrap: "wrap"
-    }
-  }, /*#__PURE__*/React.createElement("label", {
-    style: {
-      fontWeight: 600,
-      color: P.teal,
-      fontSize: 12
-    }
-  }, t.saf, ":"), [.05, .10, .15, .20].map(v => /*#__PURE__*/React.createElement("button", {
-    key: v,
-    onClick: () => setSaf(v),
-    style: {
-      padding: "4px 13px",
-      borderRadius: 16,
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 11,
-      background: saf === v ? P.teal : "#fff",
-      color: saf === v ? "#fff" : "#333",
-      border: saf === v ? `2px solid ${P.teal}` : "2px solid #ccc"
-    }
-  }, Math.round(v * 100), "%"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 10,
-      flexWrap: "wrap"
-    }
-  }, [{
-    l: t.hay,
-    v: bl.hP,
-    b: bl.hB,
-    s: sh
-  }, {
-    l: t.hyl,
-    v: bl.yP,
-    b: bl.yB,
-    s: sy
-  }].map(({
-    l,
-    v,
-    b,
-    s: st2
-  }, i) => {
-    const isDef = b > 0;
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      style: {
-        flex: 1,
-        padding: 12,
-        borderRadius: 8,
-        minWidth: 170,
-        background: isDef ? "#FBE9E7" : "#f0f7e8",
-        border: `2px solid ${isDef ? P.red : P.forest}`
-      }
-    }, /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
         fontSize: 10,
         fontWeight: 600,
-        color: isDef ? P.red : P.forest
+        color: P.purple
       }
-    }, t.pur, " - ", l), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 24,
-        fontWeight: 800,
-        color: isDef ? P.red : P.teal,
-        margin: "2px 0"
-      }
-    }, fm(v), " ", /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 11,
-        fontWeight: 400
-      }
-    }, t.ton)), /*#__PURE__*/React.createElement("div", {
+    }, t.planBalePrice), /*#__PURE__*/React.createElement(Inp, {
+      value: h2.pb,
+      onChange: v => uHv(ty, "pb", v),
+      step: "0.01"
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
       style: {
         fontSize: 10,
-        color: isDef ? P.red : P.forest
+        fontWeight: 600,
+        color: P.purple
       }
-    }, isDef ? t.def : t.sur), isDef && st2.aCT > 0 && /*#__PURE__*/React.createElement("div", {
+    }, t.planTonnePrice), /*#__PURE__*/React.createElement(Inp, {
+      value: h2.pt,
+      onChange: v => uHv(ty, "pt", v),
+      step: "1"
+    }))), totalCost > 0 && /*#__PURE__*/React.createElement("div", {
       style: {
-        marginTop: 6,
-        paddingTop: 6,
-        borderTop: "1px solid rgba(0,0,0,.1)",
-        fontSize: 10,
-        color: "#555"
+        padding: "8px 12px",
+        borderRadius: 6,
+        fontSize: 12,
+        background: "#F3E5F5",
+        color: P.purple,
+        marginTop: 8,
+        fontWeight: 600
       }
-    }, t.estPC, ": ", /*#__PURE__*/React.createElement("b", {
+    }, "\uD83D\uDCB0 " + t.planCost, ": ", /*#__PURE__*/React.createElement("b", {
       style: {
-        color: P.teal
+        fontSize: 14
       }
-    }, fc(v * st2.aCT))));
-  })), (sh.tC > 0 || sy.tC > 0) && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: "linear-gradient(135deg,#f5f0ff,#efe8ff)",
-      border: `2px solid ${P.purple}`,
-      borderRadius: 8,
-      padding: 12,
-      marginTop: 12
-    }
-  }, /*#__PURE__*/React.createElement("h4", {
-    style: {
-      color: P.purple,
-      fontSize: 12,
-      margin: "0 0 6px"
-    }
-  }, t.costTi), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "grid",
-      gridTemplateColumns: "repeat(3,1fr)",
-      gap: 8,
-      textAlign: "center"
-    }
-  }, [{
-    l: t.hay,
-    v: sh.tC
-  }, {
-    l: t.hyl,
-    v: sy.tC
-  }, {
-    l: "Total",
-    v: sh.tC + sy.tC
-  }].map((x, i) => /*#__PURE__*/React.createElement("div", {
-    key: i
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 9,
-      color: "#666"
-    }
-  }, x.l), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 16,
-      fontWeight: 800,
-      color: P.purple
-    }
-  }, fc(x.v)))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 16,
-      padding: 12,
-      background: "#f7f9f5",
-      borderRadius: 8,
-      borderLeft: `3px solid ${P.bright}`
-    }
-  }, /*#__PURE__*/React.createElement("h3", {
-    style: {
-      color: P.teal,
-      margin: "0 0 5px",
-      fontSize: 12
-    }
-  }, t.iT), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 10,
-      margin: "2px 0",
-      color: P.red
-    }
-  }, t.iP), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 10,
-      margin: "2px 0",
-      color: P.forest
-    }
-  }, t.iN), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 10,
-      margin: "2px 0",
-      color: "#555"
-    }
-  }, t.iS)))), showRef && /*#__PURE__*/React.createElement("div", {
+    }, fc(totalCost))));
+  }))), /*#__PURE__*/React.createElement(Info, null, "\uD83D\uDCA1 " + t.iP), /*#__PURE__*/React.createElement(Info, null, "\u2705 " + t.iN))), showRef && /*#__PURE__*/React.createElement("div", {
     onClick: () => setShowRef(false),
     style: {
       position: "fixed",
       inset: 0,
-      background: "rgba(0,0,0,.5)",
+      background: "rgba(0,0,0,.6)",
       zIndex: 1000,
       display: "flex",
       alignItems: "center",
@@ -2297,48 +2879,48 @@ const App = function App() {
     onClick: e => e.stopPropagation(),
     style: {
       background: "#fff",
-      borderRadius: 10,
+      borderRadius: 12,
       maxWidth: 700,
       width: "100%",
       maxHeight: "85vh",
       overflow: "auto",
-      padding: 16
+      padding: 18
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 12
+      marginBottom: 14
     }
   }, /*#__PURE__*/React.createElement("h2", {
     style: {
       color: P.teal,
-      fontSize: 14,
+      fontSize: 15,
       margin: 0
     }
   }, t.refT), /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowRef(false),
     style: {
-      padding: "3px 10px",
+      padding: "4px 12px",
       border: "1px solid #ccc",
-      borderRadius: 5,
+      borderRadius: 6,
       cursor: "pointer",
-      fontSize: 11,
+      fontSize: 12,
       background: "#fff"
     }
   }, t.cls)), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: 10,
+      fontSize: 11,
       color: "#666",
-      margin: "0 0 6px"
+      margin: "0 0 8px"
     }
   }, t.refS), /*#__PURE__*/React.createElement("table", {
     style: {
       width: "100%",
       borderCollapse: "collapse",
-      fontSize: 10,
-      marginBottom: 14
+      fontSize: 11,
+      marginBottom: 16
     }
   }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
     style: {
@@ -2347,24 +2929,20 @@ const App = function App() {
     }
   }, /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 4,
-      textAlign: "left",
-      fontWeight: 600
+      padding: 6,
+      textAlign: "left"
     }
   }, t.cat), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 4,
-      fontWeight: 600
+      padding: 6
     }
   }, t.sh), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 4,
-      fontWeight: 600
+      padding: 6
     }
   }, t.po), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 4,
-      fontWeight: 600
+      padding: 6
     }
   }, t.dh))), /*#__PURE__*/React.createElement("tbody", null, INRA.map((r, i) => /*#__PURE__*/React.createElement("tr", {
     key: i,
@@ -2373,44 +2951,44 @@ const App = function App() {
     }
   }, /*#__PURE__*/React.createElement("td", {
     style: {
-      padding: 4,
+      padding: 6,
       textAlign: "left"
     }
   }, t.rc[i]), r.map((v, j) => /*#__PURE__*/React.createElement("td", {
     key: j,
     style: {
-      padding: 4,
+      padding: 6,
       textAlign: "center"
     }
   }, v)))))), /*#__PURE__*/React.createElement("h3", {
     style: {
       color: P.teal,
-      fontSize: 12,
-      margin: "12px 0 3px"
+      fontSize: 13,
+      margin: "14px 0 4px"
     }
   }, t.baleT), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: 9,
+      fontSize: 10,
       color: "#888",
-      margin: "0 0 4px"
+      margin: "0 0 8px"
     }
   }, t.baleSrc), ["hay", "haylage", "straw"].map(k => /*#__PURE__*/React.createElement("div", {
     key: k,
     style: {
-      marginBottom: 8
+      marginBottom: 10
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontWeight: 700,
       color: P.forest,
-      fontSize: 10,
-      marginBottom: 2
+      fontSize: 11,
+      marginBottom: 3
     }
   }, t.rB, " - ", k === "hay" ? t.hay : k === "haylage" ? t.hyl : t.str), /*#__PURE__*/React.createElement("table", {
     style: {
       width: "100%",
       borderCollapse: "collapse",
-      fontSize: 10
+      fontSize: 11
     }
   }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
     style: {
@@ -2418,120 +2996,38 @@ const App = function App() {
     }
   }, /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 3,
-      color: P.teal,
-      fontWeight: 600
+      padding: 4,
+      color: P.teal
     }
   }, t.dia), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 3,
-      color: P.teal,
-      fontWeight: 600
+      padding: 4,
+      color: P.teal
     }
   }, t.dwt), /*#__PURE__*/React.createElement("th", {
     style: {
-      padding: 3,
-      color: P.teal,
-      fontWeight: 600
+      padding: 4,
+      color: P.teal
     }
   }, t.gwt))), /*#__PURE__*/React.createElement("tbody", null, BLD[k].map((b, i) => /*#__PURE__*/React.createElement("tr", {
     key: i
   }, /*#__PURE__*/React.createElement("td", {
     style: {
-      padding: 3,
+      padding: 4,
       textAlign: "center",
       borderBottom: "1px solid #eee"
     }
   }, b.d), /*#__PURE__*/React.createElement("td", {
     style: {
-      padding: 3,
-      textAlign: "center",
-      borderBottom: "1px solid #eee"
+      padding: 4,
+      textAlign: "center"
     }
   }, b.dm), /*#__PURE__*/React.createElement("td", {
     style: {
-      padding: 3,
-      textAlign: "center",
-      borderBottom: "1px solid #eee"
-    }
-  }, b.g))))))), /*#__PURE__*/React.createElement("h4", {
-    style: {
-      color: P.teal,
-      fontSize: 11,
-      margin: "10px 0 4px"
-    }
-  }, t.recB), ["hay", "haylage", "straw"].map(k => /*#__PURE__*/React.createElement("div", {
-    key: k + "r",
-    style: {
-      marginBottom: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontWeight: 700,
-      color: P.forest,
-      fontSize: 10,
-      marginBottom: 2
-    }
-  }, t.recB, " - ", k === "hay" ? t.hay : k === "haylage" ? t.hyl : t.str), /*#__PURE__*/React.createElement("table", {
-    style: {
-      width: "100%",
-      borderCollapse: "collapse",
-      fontSize: 10
-    }
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
-    style: {
-      background: P.pale
-    }
-  }, /*#__PURE__*/React.createElement("th", {
-    style: {
-      padding: 3,
-      color: P.teal,
-      fontWeight: 600
-    }
-  }, t.dim), /*#__PURE__*/React.createElement("th", {
-    style: {
-      padding: 3,
-      color: P.teal,
-      fontWeight: 600
-    }
-  }, t.gwt))), /*#__PURE__*/React.createElement("tbody", null, BRECT[k].map((b, i) => /*#__PURE__*/React.createElement("tr", {
-    key: i
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      padding: 3,
-      textAlign: "center",
-      borderBottom: "1px solid #eee"
-    }
-  }, b.d), /*#__PURE__*/React.createElement("td", {
-    style: {
-      padding: 3,
-      textAlign: "center",
-      borderBottom: "1px solid #eee"
-    }
-  }, b.g))))))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: "12px 14px",
-      borderTop: `2px solid ${P.pale}`,
-      fontSize: 9,
-      color: "#999",
+      padding: 4,
       textAlign: "center"
     }
-  }, /*#__PURE__*/React.createElement("details", null, /*#__PURE__*/React.createElement("summary", {
-    style: {
-      cursor: "pointer",
-      fontWeight: 600,
-      color: P.teal
-    }
-  }, t.discT), /*#__PURE__*/React.createElement("p", {
-    style: {
-      textAlign: "left",
-      lineHeight: 1.5,
-      marginTop: 6,
-      color: "#666"
-    }
-  }, t.disc))));
-};
+  }, b.g))))))))), /*#__PURE__*/React.createElement(RefsFooter, null), /*#__PURE__*/React.createElement(LegalFooter, null));
+}
 ReactDOM.render(React.createElement(App),document.getElementById("root"));
-</script>
-</body>
-</html>
+</script></body></html>
